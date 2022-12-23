@@ -3,5 +3,37 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "cartago-lib": {
+      "projectType": "library",
+      "root": "projects/cartago-lib",
+      "sourceRoot": "projects/cartago-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/cartago-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/cartago-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/cartago-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/cartago-lib/src/test.ts",
+            "tsConfig": "projects/cartago-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/cartago-lib/karma.conf.js"
+          }
+        }
+      }
+    }
+   
   }
 }
