@@ -51,7 +51,7 @@ export class LibraryConfig implements ILibraryConfig {
 
   //ANCHOR - Métodos
   private _proxyArrayMethods = () => {
-    
+    // Object.keys(this).forEach()
   }
 }
 
