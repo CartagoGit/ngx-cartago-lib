@@ -7,7 +7,7 @@
       "projectType": "library",
       "root": "projects/cartago-lib",
       "sourceRoot": "projects/cartago-lib/src",
-      "prefix": "lib",
+      "prefix": "component",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -34,6 +34,6 @@
         }
       }
     }
-   
+
   }
 }
