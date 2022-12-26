@@ -1,51 +1,54 @@
-import { TLibraryType, LibraryConfig } from '../../../config/config.model';
+import { TLibraryType } from '../../../config/config.model';
 import {
   IFileDataArgs,
   IFileData,
   IFileDataCreated,
 } from '../../models/file.model';
-import { isKeyInObject, formatConverter } from '../helpers';
-// import { CatalogueConfig } from 'cartago-lib';
+import { isKeyInObject, formatConverter, singularConverter } from '../helpers';
 
-export const getFileData = (data: IFileDataArgs, obj : any) => {
+export const getFileData = (name: string, data: IFileDataArgs, object: any) => {
   Object.values(data).map((elem) => elem);
-  const { name, type, subtype, extension = 'ts', subextension, from } = data;
+  const { type, subtype, extension = 'ts', subextension, from } = data;
   const file: { [key in keyof IFileDataCreated]?: string } = {
     fileName: getFileName(name),
     folder: getFileFolder(from, type, subtype),
   };
-  if (isKeyInObject(obj, type as string)){
-    console.log('alla');
-  }else console.log('koo');;
 
   // console.log(isType(type));
   // console.log(isType());
   // console.log((type is TLibraryType));
 
-  // const defaulMethodType = (folder?: string) => {
-  //   subextension = type && singularConverter(type);
-  //   extension = 'ts';
-  //   from = folder;
-  //   console.log(2);
-  // };
+  //* Metodo que van a ejecutar
+  const defaulMethodType = () => {
+    data.subextension = type && singularConverter(type);
+  };
 
-  // const methodType: { [key in TLibraryType]?: () => void } = {
-  //   helpers: () => {
-  //     console.log(1);
-  //   },
-  // };
+  const methodType: { [key in TLibraryType]?: () => void } = {
+    helpers: () => {
+      data.subextension = undefined;
+    },
+    styles: () => {
+      data.subextension = undefined;
+    },
+  };
 
-  // console.log(type, methodType[type!]);
+  //* Comprobamos si el tipo pertenece a los tipos del objeto
+  if (!!type && isKeyInObject(object, type as string)) {
+    defaulMethodType();
+    const typeLibrary = type as TLibraryType;
+    !!methodType[typeLibrary!] && //* Comprueba si hay metodo especifico para el tipo
+      methodType[typeLibrary!]!()!;
+  } else defaulMethodType(); //* Si no hay tipo hacer el defecto
+
+  console.log(type, methodType[type! as TLibraryType]);
+
   // !!type
-  //   ? defaulMethodType() //* Si no hay tipo hacer el defecto
-  //   : !!methodType[type!] //* Comprueba si hay metodo especifico para el tipo
-  //   ? methodType[type!]!()!
-  //   : defaulMethodType(from);
+  //   ?
 
   return {
     ...data,
     extension,
-
+    ...file,
     // file: '',
     // source: '',
     // fileNameWithExtension: '',

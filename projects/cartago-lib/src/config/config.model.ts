@@ -7,6 +7,7 @@ import { IFileData } from '../lib/models/file.model';
  */
 export type TLibraryType =
   | 'components'
+  | 'utils'
   | 'services'
   | 'models'
   | 'pipes'
@@ -30,13 +31,13 @@ export interface ILibraryElement {
 /**
  * ? Interfaz del modelo de la configuracion de Jerarquías
  */
-export type ILibraryTypeConfig = {
+export type ILibraryConfig = {
   [key in TLibraryType]: ILibraryElement[];
 };
 
-export interface ILibraryConfig extends ILibraryTypeConfig {
-  config: ILibraryElement;
-}
+// export interface ILibraryConfig extends ILibraryTypeConfig {
+//   config: ILibraryElement;
+// }
 
 /**
  * ? Clase de la configuracion de la Librería
@@ -82,13 +83,16 @@ export class LibraryConfig implements ILibraryConfig {
    * @param {TLibraryType} prop
    * @returns {ILibraryElement} - Retorna el
    */
-  private _changerType = (elem: ILibraryElement, prop: TLibraryType) => {
-    getFileData({ name: elem.name, type: prop }, this);
+  private _changerType = (
+    elem: ILibraryElement,
+    prop: TLibraryType
+  ): ILibraryElement => {
+    elem.file = getFileData(elem.name, { type: prop }, this);
 
-    getFileData(
-      { name: 'no es un elemento', type: 'un elemento sin tipo' },
-      this
-    );
+    // getFileData(
+    //   { name: 'no es un elemento', type: 'un elemento sin tipo' },
+    //   this
+    // );
 
     //   //* Añadimos el tipo del elemento segun el array donde ha sido colocado
     //   elem.type = prop;

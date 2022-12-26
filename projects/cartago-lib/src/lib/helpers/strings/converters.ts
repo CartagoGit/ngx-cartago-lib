@@ -61,9 +61,10 @@ export const formatConverter = (
     | 'kebab-case' = 'kebab-case'
 ): string => {
   return name
+    .trim()
     .split(' ')
     .map((word, index, array) => {
-      word = word.toLowerCase();
+      word = word.toLowerCase().trim();
       if (index === 0 && typeConverter === 'camelCase') return word;
       else if (typeConverter === 'PascalCase' || typeConverter === 'camelCase')
         return capitalizeConverter(word);
