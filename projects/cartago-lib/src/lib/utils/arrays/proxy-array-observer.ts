@@ -1,14 +1,14 @@
 /**
  * ? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra
  * @param {any[]} array - El array al que añadir el proxy
- * @param {(value: any) => void} [changeValueCallback=() => {}] - Callback para cambiar el valor antes de realizar el cambio en el array
+ * @param {(value: any) => unknown} [changeValueCallback=() => {}] - Callback para cambiar el valor antes de realizar el cambio en el array - DEBE DEVOLVER EL VALOR
  * @param {(...args: any) => void} [finalCallback=() => {}] - Callback llamado al terminar el cambio en el array
  * @param {boolean} [showLogs=false] - Mostrar Logs
  * @returns {void, finalCallback?: (...args: any) => void, showLogs?: boolean) => any} - Retorna el Array con el proxy implementado
  */
 export const proxyArrayObserver = (
 	array: any[],
-	changeValueCallback: (value: any) => void = () => {},
+	changeValueCallback: (value: any) => unknown = () => {},
 	finalCallback: (...args: any) => void = () => {},
 	showLogs: boolean = false
 ) => {

@@ -6,11 +6,12 @@
 // export * from './lib/prueba/cartago-lib.component';
 // export * from './lib/prueba/cartago-lib.module';
 
-//? Principal Modulo
+//!! Principal Modulo
 export * from './lib/cartago-library.module';
 
-//? Modulo con los componentes
+//$ Modulo con los componentes
 export * from './lib/components/components.module';
 
-//* Componentes
-export * from './lib/components/button/button.component';
+//? Modulo de componentes puros
+//* Componentes puros
+export * from './lib/components/pures/button/button.component';

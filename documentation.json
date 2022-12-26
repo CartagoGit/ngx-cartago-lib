@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "ILibraryElement",
-            "id": "interface-ILibraryElement-43f1ef1c804d6d112867487f37d7635f79f1044c6b525eda99226044bab202f13f1cc776fd901b534fe8c514305b39cb00718743676e6a4bb5c697bd661121c3",
+            "id": "interface-ILibraryElement-6b57892cebd6aa0bfe18cf556cbf14d60325919c2fc79aa2edd7dc8f50a11d046af0b4aceddd2616c0bbcd6bd1c8d60f7915c4cc024881a4ba199e4fdfd29268",
             "file": "projects/cartago-lib/src/config/config.model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export type TLibraryType =\r\n  | 'components'\r\n  | 'utils'\r\n  | 'services'\r\n  | 'models'\r\n  | 'pipes'\r\n  | 'directives'\r\n  | 'helpers'\r\n  | 'styles';\r\n\r\n/**\r\n * ? Interfaz de cada elemento de la libreria\r\n */\r\nexport interface ILibraryElement {\r\n  name: string;\r\n  type: TLibraryType;\r\n  element: any;\r\n  description?: string;\r\n  details?: any;\r\n}\r\n\r\n/**\r\n * ? Interfaz del modelo de la configuracion de Jerarquías\r\n */\r\nexport type ILibraryConfig = {\r\n  [key in TLibraryType]: ILibraryElement[];\r\n};\r\n\r\n/**\r\n * ? Clase de la configuracion de la Librería\r\n */\r\n// export class LibraryConfig implements ILibraryConfig {\r\nexport class LibraryConfig implements ILibraryConfig {\r\n  // ANCHOR - Variables\r\n  public components : ILibraryElement[] = [];\r\n  public utils: ILibraryElement[] = [];\r\n  public services: ILibraryElement[] = [];\r\n  public models: ILibraryElement[] = [];\r\n  public pipes: ILibraryElement[] = [];\r\n  public directives: ILibraryElement[] = [];\r\n  public helpers: ILibraryElement[] = [];\r\n  public styles: ILibraryElement[] = [];\r\n\r\n  // ANCHOR - Constructor\r\n  constructor() {\r\n    this._proxyArrayMethods();\r\n  }\r\n\r\n  //ANCHOR - Métodos\r\n  private _proxyArrayMethods = () => {\r\n    // Object.keys(this).forEach()\r\n  }\r\n}\r\n\r\nconst config = new LibraryConfig();\r\n// config.components.push('algo')\r\n",
+            "sourceCode": "import { proxyArrayObserver } from '../lib/utils/utils';\r\n\r\n/**\r\n * ? Tipos de elementos de la libreria\r\n */\r\nexport type TLibraryType =\r\n  | 'components'\r\n  | 'utils'\r\n  | 'services'\r\n  | 'models'\r\n  | 'pipes'\r\n  | 'directives'\r\n  | 'helpers'\r\n  | 'styles';\r\n\r\n/**\r\n * ? Interfaz de cada elemento de la libreria\r\n */\r\nexport interface ILibraryElement {\r\n  name: string;\r\n  type: TLibraryType;\r\n  element: any;\r\n  source: string;\r\n  description?: string;\r\n  details?: any;\r\n}\r\n\r\n/**\r\n * ? Interfaz del modelo de la configuracion de Jerarquías\r\n */\r\nexport type ILibraryConfig = {\r\n  [key in TLibraryType]: ILibraryElement[];\r\n};\r\n\r\n/**\r\n * ? Clase de la configuracion de la Librería\r\n */\r\n// export class LibraryConfig implements ILibraryConfig {\r\nexport class LibraryConfig implements ILibraryConfig {\r\n  // ANCHOR - Variables\r\n  public components: ILibraryElement[] = [];\r\n  public utils: ILibraryElement[] = [];\r\n  public services: ILibraryElement[] = [];\r\n  public models: ILibraryElement[] = [];\r\n  public pipes: ILibraryElement[] = [];\r\n  public directives: ILibraryElement[] = [];\r\n  public helpers: ILibraryElement[] = [];\r\n  public styles: ILibraryElement[] = [];\r\n\r\n  // ANCHOR - Constructor\r\n  constructor() {\r\n    this._proxyArrayMethods();\r\n    console.log(0, this.components);\r\n\r\n    this.components.push({\r\n      name: 'un nombre',\r\n      type: 'directives',\r\n      element: 'un elemento',\r\n      source: 'un recurso',\r\n      description: 'una decripcion',\r\n      details: 'los detalles',\r\n    });\r\n    console.log(1, this.components[0]);\r\n  }\r\n\r\n  //ANCHOR - Métodos\r\n  private _proxyArrayMethods = () => {\r\n    //* Listener a añadir al proxy cuando los arrays cambien\r\n    const changerType = (elem: ILibraryElement, prop: TLibraryType) => {\r\n      elem.source = './lib/'+prop+'/'+\r\n      elem.type = prop;\r\n      return elem;\r\n    };\r\n\r\n    //* Añadimos el Listener a cada array de la clase\r\n    Object.entries(this).forEach(([key, array]) => {\r\n      if (Array.isArray(array)) {\r\n        this[key as TLibraryType] = proxyArrayObserver(array, (elem) =>\r\n          changerType(elem, key as TLibraryType)\r\n        );\r\n      }\r\n    });\r\n  };\r\n}\r\n",
             "properties": [
                 {
                     "name": "description",
@@ -17,7 +17,7 @@
                     "type": "string",
                     "optional": true,
                     "description": "",
-                    "line": 21
+                    "line": 24
                 },
                 {
                     "name": "details",
@@ -26,7 +26,7 @@
                     "type": "any",
                     "optional": true,
                     "description": "",
-                    "line": 22
+                    "line": 25
                 },
                 {
                     "name": "element",
@@ -35,7 +35,7 @@
                     "type": "any",
                     "optional": false,
                     "description": "",
-                    "line": 20
+                    "line": 22
                 },
                 {
                     "name": "name",
@@ -44,7 +44,16 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 18
+                    "line": 20
+                },
+                {
+                    "name": "source",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 23
                 },
                 {
                     "name": "type",
@@ -53,7 +62,7 @@
                     "type": "TLibraryType",
                     "optional": false,
                     "description": "",
-                    "line": 19
+                    "line": 21
                 }
             ],
             "indexSignatures": [],
@@ -103,19 +112,19 @@
     "classes": [
         {
             "name": "LibraryConfig",
-            "id": "class-LibraryConfig-43f1ef1c804d6d112867487f37d7635f79f1044c6b525eda99226044bab202f13f1cc776fd901b534fe8c514305b39cb00718743676e6a4bb5c697bd661121c3",
+            "id": "class-LibraryConfig-6b57892cebd6aa0bfe18cf556cbf14d60325919c2fc79aa2edd7dc8f50a11d046af0b4aceddd2616c0bbcd6bd1c8d60f7915c4cc024881a4ba199e4fdfd29268",
             "file": "projects/cartago-lib/src/config/config.model.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "class",
-            "sourceCode": "export type TLibraryType =\r\n  | 'components'\r\n  | 'utils'\r\n  | 'services'\r\n  | 'models'\r\n  | 'pipes'\r\n  | 'directives'\r\n  | 'helpers'\r\n  | 'styles';\r\n\r\n/**\r\n * ? Interfaz de cada elemento de la libreria\r\n */\r\nexport interface ILibraryElement {\r\n  name: string;\r\n  type: TLibraryType;\r\n  element: any;\r\n  description?: string;\r\n  details?: any;\r\n}\r\n\r\n/**\r\n * ? Interfaz del modelo de la configuracion de Jerarquías\r\n */\r\nexport type ILibraryConfig = {\r\n  [key in TLibraryType]: ILibraryElement[];\r\n};\r\n\r\n/**\r\n * ? Clase de la configuracion de la Librería\r\n */\r\n// export class LibraryConfig implements ILibraryConfig {\r\nexport class LibraryConfig implements ILibraryConfig {\r\n  // ANCHOR - Variables\r\n  public components : ILibraryElement[] = [];\r\n  public utils: ILibraryElement[] = [];\r\n  public services: ILibraryElement[] = [];\r\n  public models: ILibraryElement[] = [];\r\n  public pipes: ILibraryElement[] = [];\r\n  public directives: ILibraryElement[] = [];\r\n  public helpers: ILibraryElement[] = [];\r\n  public styles: ILibraryElement[] = [];\r\n\r\n  // ANCHOR - Constructor\r\n  constructor() {\r\n    this._proxyArrayMethods();\r\n  }\r\n\r\n  //ANCHOR - Métodos\r\n  private _proxyArrayMethods = () => {\r\n    // Object.keys(this).forEach()\r\n  }\r\n}\r\n\r\nconst config = new LibraryConfig();\r\n// config.components.push('algo')\r\n",
+            "sourceCode": "import { proxyArrayObserver } from '../lib/utils/utils';\r\n\r\n/**\r\n * ? Tipos de elementos de la libreria\r\n */\r\nexport type TLibraryType =\r\n  | 'components'\r\n  | 'utils'\r\n  | 'services'\r\n  | 'models'\r\n  | 'pipes'\r\n  | 'directives'\r\n  | 'helpers'\r\n  | 'styles';\r\n\r\n/**\r\n * ? Interfaz de cada elemento de la libreria\r\n */\r\nexport interface ILibraryElement {\r\n  name: string;\r\n  type: TLibraryType;\r\n  element: any;\r\n  source: string;\r\n  description?: string;\r\n  details?: any;\r\n}\r\n\r\n/**\r\n * ? Interfaz del modelo de la configuracion de Jerarquías\r\n */\r\nexport type ILibraryConfig = {\r\n  [key in TLibraryType]: ILibraryElement[];\r\n};\r\n\r\n/**\r\n * ? Clase de la configuracion de la Librería\r\n */\r\n// export class LibraryConfig implements ILibraryConfig {\r\nexport class LibraryConfig implements ILibraryConfig {\r\n  // ANCHOR - Variables\r\n  public components: ILibraryElement[] = [];\r\n  public utils: ILibraryElement[] = [];\r\n  public services: ILibraryElement[] = [];\r\n  public models: ILibraryElement[] = [];\r\n  public pipes: ILibraryElement[] = [];\r\n  public directives: ILibraryElement[] = [];\r\n  public helpers: ILibraryElement[] = [];\r\n  public styles: ILibraryElement[] = [];\r\n\r\n  // ANCHOR - Constructor\r\n  constructor() {\r\n    this._proxyArrayMethods();\r\n    console.log(0, this.components);\r\n\r\n    this.components.push({\r\n      name: 'un nombre',\r\n      type: 'directives',\r\n      element: 'un elemento',\r\n      source: 'un recurso',\r\n      description: 'una decripcion',\r\n      details: 'los detalles',\r\n    });\r\n    console.log(1, this.components[0]);\r\n  }\r\n\r\n  //ANCHOR - Métodos\r\n  private _proxyArrayMethods = () => {\r\n    //* Listener a añadir al proxy cuando los arrays cambien\r\n    const changerType = (elem: ILibraryElement, prop: TLibraryType) => {\r\n      elem.source = './lib/'+prop+'/'+\r\n      elem.type = prop;\r\n      return elem;\r\n    };\r\n\r\n    //* Añadimos el Listener a cada array de la clase\r\n    Object.entries(this).forEach(([key, array]) => {\r\n      if (Array.isArray(array)) {\r\n        this[key as TLibraryType] = proxyArrayObserver(array, (elem) =>\r\n          changerType(elem, key as TLibraryType)\r\n        );\r\n      }\r\n    });\r\n  };\r\n}\r\n",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 45
+                "line": 48
             },
             "properties": [
                 {
@@ -126,7 +135,7 @@
                     "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 53,
+                    "line": 67,
                     "modifierKind": [
                         121
                     ]
@@ -139,7 +148,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 38,
+                    "line": 41,
                     "modifierKind": [
                         123
                     ]
@@ -152,7 +161,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 43,
+                    "line": 46,
                     "modifierKind": [
                         123
                     ]
@@ -165,7 +174,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 44,
+                    "line": 47,
                     "modifierKind": [
                         123
                     ]
@@ -178,7 +187,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 41,
+                    "line": 44,
                     "modifierKind": [
                         123
                     ]
@@ -191,7 +200,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 42,
+                    "line": 45,
                     "modifierKind": [
                         123
                     ]
@@ -204,7 +213,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 40,
+                    "line": 43,
                     "modifierKind": [
                         123
                     ]
@@ -217,7 +226,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 45,
+                    "line": 48,
                     "modifierKind": [
                         123
                     ]
@@ -230,7 +239,7 @@
                     "type": "ILibraryElement[]",
                     "optional": false,
                     "description": "",
-                    "line": 39,
+                    "line": 42,
                     "modifierKind": [
                         123
                     ]
@@ -428,8 +437,8 @@
         },
         {
             "name": "ButtonComponent",
-            "id": "component-ButtonComponent-e5d7b6ba48d93f5dd32ef73a86f721e4de6b456cdd9a99d2a527bf28d2e84cdd98134c6482287674989014d53ea7426e868847f815e5a86d7b561468231d1998-1",
-            "file": "projects/cartago-lib/src/lib/components/button/button.component.ts",
+            "id": "component-ButtonComponent-033049ab422ea27fdd7387a30840fddd1a3ab8414e1d9b071dbec18672355f9f247869e67df4d9ff92ac7917d3280eb52b3d7fefecce1f92c4ecda6240a82ccb-1",
+            "file": "projects/cartago-lib/src/lib/components/pures/button/button.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -449,12 +458,22 @@
             "propertiesClass": [],
             "methodsClass": [
                 {
+                    "name": "ngAfterViewInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 14,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 13,
+                    "line": 12,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -466,7 +485,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'lib-component-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.css']\n})\nexport class ButtonComponent implements OnInit {\n\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport { LibraryConfig } from '../../../../config/config.model';\n\n@Component({\n  selector: 'lib-component-button',\n  templateUrl: './button.component.html',\n  styleUrls: ['./button.component.css'],\n})\nexport class ButtonComponent implements OnInit {\n  constructor() {}\n\n  ngOnInit(): void {}\n\n  ngAfterViewInit(): void {\n    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.\n    //Add 'implements AfterViewInit' to the class.\n    const prueba = new LibraryConfig();\n    // console.log(prueba);\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
@@ -481,7 +500,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 8
+                "line": 9
             },
             "implements": [
                 "OnInit"
@@ -489,7 +508,7 @@
             "isDuplicate": true,
             "duplicateId": 1,
             "duplicateName": "ButtonComponent-1",
-            "templateData": "<button type=\"button\">Hola</button>\n"
+            "templateData": "<button type=\"button\">Hola pero actualiza?</button>\n"
         },
         {
             "name": "CartagoLibComponent",
@@ -829,13 +848,13 @@
         },
         {
             "name": "ComponentsModule",
-            "id": "module-ComponentsModule-ca944955d97df0c76ecb612af0c5f6fd2c2b38118d2bfd686da5efbd2811c197b292589999fe4e94318a2f09c4480ed204404d7f45774df4fcc256729bc65c9a",
+            "id": "module-ComponentsModule-8d1c5b670af7396a40ceddd42324ec765814e58071534b677f564810a1e9e37bb6ce017b387ef7020690bed7b566ed6023488d2ad167d9752d5d39fca62c97cb",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "projects/cartago-lib/src/lib/components/components.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { ButtonComponent } from './button/button.component';\n\n@NgModule({\n  declarations: [ButtonComponent],\n  imports: [CommonModule],\n  exports: [ButtonComponent],\n})\nexport class ComponentsModule {}\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { ButtonComponent } from './pure/button/button.component';\n\n@NgModule({\n  declarations: [ButtonComponent],\n  imports: [CommonModule],\n  exports: [ButtonComponent],\n})\nexport class ComponentsModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -855,7 +874,55 @@
                 },
                 {
                     "type": "exports",
+                    "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
                     "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "ComponentsModule",
+            "id": "module-ComponentsModule-8d1c5b670af7396a40ceddd42324ec765814e58071534b677f564810a1e9e37bb6ce017b387ef7020690bed7b566ed6023488d2ad167d9752d5d39fca62c97cb-1",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "projects/cartago-lib/src/lib/components/pures/pures.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { ButtonComponent } from './pure/button/button.component';\n\n@NgModule({\n  declarations: [ButtonComponent],\n  imports: [CommonModule],\n  exports: [ButtonComponent],\n})\nexport class ComponentsModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "ButtonComponent"
+                        }
+                    ]
                 },
                 {
                     "type": "bootstrap",
@@ -906,16 +973,6 @@
     ],
     "miscellaneous": {
         "variables": [
-            {
-                "name": "config",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "projects/cartago-lib/src/config/config.model.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "new LibraryConfig()"
-            },
             {
                 "name": "config",
                 "ctype": "miscellaneous",
@@ -1014,7 +1071,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "(\r\n\tarray: any[],\r\n\tchangeValueCallback: (value: any) => void = () => {},\r\n\tfinalCallback: (...args: any) => void = () => {},\r\n\tshowLogs: boolean = false\r\n) => {\r\n\t!!showLogs && console.log(array);\r\n\t//* Si el navegador no acepta Proxys\r\n\tif (typeof window !== \"undefined\" && !(\"Proxy\" in window)) {\r\n\t\tconsole.warn(\"Your browser doesn't support Proxies.\");\r\n\t\treturn array;\r\n\t}\r\n\t//* Devuelve el proxy\r\n\treturn new Proxy(array, {\r\n\t\tdeleteProperty: function (target, property) {\r\n\t\t\tconst properties = { target, property };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Deleted %s\", property);\r\n\r\n\t\t\t//* Elimina el elemento en la posicion\r\n\t\t\tdelete target[Number(property)];\r\n\r\n\t\t\t//* Llama al callback final\r\n\t\t\tfinalCallback(properties, \"delete\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t\tset: function (target, property, value, receiver) {\r\n\t\t\tconst properties = { target, property, value, receiver };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Set %s to %o\", property, value);\r\n\r\n\t\t\t//* Si cambia el valor\r\n\t\t\tproperty !== \"length\" && (value = changeValueCallback(value));\r\n\r\n\t\t\t//* Setea el cambio\r\n\t\t\ttarget[Number(property)] = value;\r\n\r\n\t\t\t//*Llama al callback final\r\n\t\t\tfinalCallback(properties, \"set\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t});\r\n}",
+                "defaultValue": "(\r\n\tarray: any[],\r\n\tchangeValueCallback: (value: any) => unknown = () => {},\r\n\tfinalCallback: (...args: any) => void = () => {},\r\n\tshowLogs: boolean = false\r\n) => {\r\n\t!!showLogs && console.log(array);\r\n\t//* Si el navegador no acepta Proxys\r\n\tif (typeof window !== \"undefined\" && !(\"Proxy\" in window)) {\r\n\t\tconsole.warn(\"Your browser doesn't support Proxies.\");\r\n\t\treturn array;\r\n\t}\r\n\t//* Devuelve el proxy\r\n\treturn new Proxy(array, {\r\n\t\tdeleteProperty: function (target, property) {\r\n\t\t\tconst properties = { target, property };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Deleted %s\", property);\r\n\r\n\t\t\t//* Elimina el elemento en la posicion\r\n\t\t\tdelete target[Number(property)];\r\n\r\n\t\t\t//* Llama al callback final\r\n\t\t\tfinalCallback(properties, \"delete\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t\tset: function (target, property, value, receiver) {\r\n\t\t\tconst properties = { target, property, value, receiver };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Set %s to %o\", property, value);\r\n\r\n\t\t\t//* Si cambia el valor\r\n\t\t\tproperty !== \"length\" && (value = changeValueCallback(value));\r\n\r\n\t\t\t//* Setea el cambio\r\n\t\t\ttarget[Number(property)] = value;\r\n\r\n\t\t\t//*Llama al callback final\r\n\t\t\tfinalCallback(properties, \"set\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t});\r\n}",
                 "rawdescription": "? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra",
                 "description": "<p>? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra</p>\n"
             },
@@ -1096,18 +1153,6 @@
         ],
         "enumerations": [],
         "groupedVariables": {
-            "projects/cartago-lib/src/config/config.model.ts": [
-                {
-                    "name": "config",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "projects/cartago-lib/src/config/config.model.ts",
-                    "deprecated": false,
-                    "deprecationMessage": "",
-                    "type": "",
-                    "defaultValue": "new LibraryConfig()"
-                }
-            ],
             "projects/cartago-lib/src/config/config.ts": [
                 {
                     "name": "config",
@@ -1269,7 +1314,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "(\r\n\tarray: any[],\r\n\tchangeValueCallback: (value: any) => void = () => {},\r\n\tfinalCallback: (...args: any) => void = () => {},\r\n\tshowLogs: boolean = false\r\n) => {\r\n\t!!showLogs && console.log(array);\r\n\t//* Si el navegador no acepta Proxys\r\n\tif (typeof window !== \"undefined\" && !(\"Proxy\" in window)) {\r\n\t\tconsole.warn(\"Your browser doesn't support Proxies.\");\r\n\t\treturn array;\r\n\t}\r\n\t//* Devuelve el proxy\r\n\treturn new Proxy(array, {\r\n\t\tdeleteProperty: function (target, property) {\r\n\t\t\tconst properties = { target, property };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Deleted %s\", property);\r\n\r\n\t\t\t//* Elimina el elemento en la posicion\r\n\t\t\tdelete target[Number(property)];\r\n\r\n\t\t\t//* Llama al callback final\r\n\t\t\tfinalCallback(properties, \"delete\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t\tset: function (target, property, value, receiver) {\r\n\t\t\tconst properties = { target, property, value, receiver };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Set %s to %o\", property, value);\r\n\r\n\t\t\t//* Si cambia el valor\r\n\t\t\tproperty !== \"length\" && (value = changeValueCallback(value));\r\n\r\n\t\t\t//* Setea el cambio\r\n\t\t\ttarget[Number(property)] = value;\r\n\r\n\t\t\t//*Llama al callback final\r\n\t\t\tfinalCallback(properties, \"set\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t});\r\n}",
+                    "defaultValue": "(\r\n\tarray: any[],\r\n\tchangeValueCallback: (value: any) => unknown = () => {},\r\n\tfinalCallback: (...args: any) => void = () => {},\r\n\tshowLogs: boolean = false\r\n) => {\r\n\t!!showLogs && console.log(array);\r\n\t//* Si el navegador no acepta Proxys\r\n\tif (typeof window !== \"undefined\" && !(\"Proxy\" in window)) {\r\n\t\tconsole.warn(\"Your browser doesn't support Proxies.\");\r\n\t\treturn array;\r\n\t}\r\n\t//* Devuelve el proxy\r\n\treturn new Proxy(array, {\r\n\t\tdeleteProperty: function (target, property) {\r\n\t\t\tconst properties = { target, property };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Deleted %s\", property);\r\n\r\n\t\t\t//* Elimina el elemento en la posicion\r\n\t\t\tdelete target[Number(property)];\r\n\r\n\t\t\t//* Llama al callback final\r\n\t\t\tfinalCallback(properties, \"delete\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t\tset: function (target, property, value, receiver) {\r\n\t\t\tconst properties = { target, property, value, receiver };\r\n\t\t\t//* Logs\r\n\t\t\t!!showLogs && console.log(\"PROPERTIES:\", properties);\r\n\t\t\t!!showLogs && console.log(\"Set %s to %o\", property, value);\r\n\r\n\t\t\t//* Si cambia el valor\r\n\t\t\tproperty !== \"length\" && (value = changeValueCallback(value));\r\n\r\n\t\t\t//* Setea el cambio\r\n\t\t\ttarget[Number(property)] = value;\r\n\r\n\t\t\t//*Llama al callback final\r\n\t\t\tfinalCallback(properties, \"set\");\r\n\t\t\treturn true;\r\n\t\t},\r\n\t});\r\n}",
                     "rawdescription": "? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra",
                     "description": "<p>? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra</p>\n"
                 }
@@ -1469,18 +1514,8 @@
                 "type": "interface",
                 "linktype": "interface",
                 "name": "ILibraryElement",
-                "coveragePercent": 16,
-                "coverageCount": "1/6",
-                "status": "low"
-            },
-            {
-                "filePath": "projects/cartago-lib/src/config/config.model.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "config",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
+                "coveragePercent": 14,
+                "coverageCount": "1/7",
                 "status": "low"
             },
             {
@@ -1494,12 +1529,12 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/cartago-lib/src/lib/components/button/button.component.ts",
+                "filePath": "projects/cartago-lib/src/lib/components/pures/button/button.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "ButtonComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
