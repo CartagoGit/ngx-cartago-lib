@@ -8,4 +8,4 @@ import { SharedModule } from './shared/shared.module';
   imports: [CommonModule, SharedModule, ComponentsModule],
   exports: [ComponentsModule],
 })
-export class CartagoLibraryModule {}
+export default class CartagoLibraryModule {}

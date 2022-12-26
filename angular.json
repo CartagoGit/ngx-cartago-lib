@@ -48,6 +48,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/test-app",
             "index": "projects/test-app/src/index.html",
             "main": "projects/test-app/src/main.ts",
