@@ -21,7 +21,10 @@ export class CatalogueComponent {
   private _selectedType: keyof typeof CatalogueConfig = 'components';
   set selectedType(value: keyof typeof CatalogueConfig) {
     this._selectedType = value;
-    this.selectedList = this.hierarchy[value];
+    this.isConfigSelected = false;
+    if (value !== 'config')
+      this.selectedList = this.hierarchy[value] as ILibraryElement[];
+    else this.isConfigSelected = true;
   }
 
   /**
@@ -29,13 +32,18 @@ export class CatalogueComponent {
    */
   public selectedList: ILibraryElement[] = [];
 
+  /**
+   * ? Boolean para saber si se ha seleccionado mostrar la configuracion en el catalogo
+   */
+  public isConfigSelected: boolean = false;
+
   // ANCHOR - Constructor
   constructor(private _titleSvc: Title) {
     this._titleSvc.setTitle('Catalogo de la Libreria');
   }
 
   ngAfterViewInit(): void {
-    this.selectedList = this.hierarchy[this._selectedType];
+    this.selectedType = this._selectedType;
   }
 
   // ANCHOR - Métodos

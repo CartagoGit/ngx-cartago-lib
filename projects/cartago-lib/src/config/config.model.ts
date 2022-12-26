@@ -1,5 +1,6 @@
 import { getFileData } from '../lib/helpers/strings/get-file-data';
 import { proxyArrayObserver } from '../lib/helpers/helpers';
+import { IFileData } from '../lib/models/file.model';
 
 /**
  * ? Tipos de elementos de la libreria
@@ -20,33 +21,22 @@ export interface ILibraryElement {
   name: string;
   type?: TLibraryType;
   element?: any;
-  file?: string;
-  fileNameFormated?: string;
-  fileNameWithSubextension?: string;
-  fileExtension?: string;
-  folder?: string;
-  source?: string;
-  subtype?: 'pures' | 'compounds';
+  file?: IFileData;
+  subtype?: 'pures' | 'compounds' | 'core';
   description?: string;
   details?: any;
 }
 
 /**
- * ? Interfaz de elementos de tipo componente
- */
-export interface ILibraryElementComponent extends ILibraryElement {
-  fileStyle?: string;
-  fileStyleSource?: string;
-  fileTemplate?: string;
-  fileTemplateSource?: string;
-}
-
-/**
  * ? Interfaz del modelo de la configuracion de Jerarquías
  */
-export type ILibraryConfig = {
+export type ILibraryTypeConfig = {
   [key in TLibraryType]: ILibraryElement[];
 };
+
+export interface ILibraryConfig extends ILibraryTypeConfig {
+  config: ILibraryElement;
+}
 
 /**
  * ? Clase de la configuracion de la Librería
@@ -61,6 +51,8 @@ export class LibraryConfig implements ILibraryConfig {
   public directives: ILibraryElement[] = [];
   public helpers: ILibraryElement[] = [];
   public styles: ILibraryElement[] = [];
+
+  public config: ILibraryElement = { name: 'config' };
 
   // ANCHOR - Constructor
   constructor() {
@@ -91,7 +83,12 @@ export class LibraryConfig implements ILibraryConfig {
    * @returns {ILibraryElement} - Retorna el
    */
   private _changerType = (elem: ILibraryElement, prop: TLibraryType) => {
-    getFileData(elem.name, prop);
+    getFileData({ name: elem.name, type: prop }, this);
+
+    getFileData(
+      { name: 'no es un elemento', type: 'un elemento sin tipo' },
+      this
+    );
 
     //   //* Añadimos el tipo del elemento segun el array donde ha sido colocado
     //   elem.type = prop;
