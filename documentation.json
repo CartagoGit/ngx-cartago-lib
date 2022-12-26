@@ -263,7 +263,7 @@
         {
             "name": "AppComponent",
             "id": "component-AppComponent-121a568c5b605ee01b4704168e69ac21741783fd80e19b78b4a3ba12d7d7fc500fec732e9086d936da11ff00229e8df23e6409018486a3af1cd24eaee32dfaf3",
-            "file": "projects/test-app/src/app/app.component.ts",
+            "file": "projects/catalogue-app/src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
@@ -724,7 +724,7 @@
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
-            "file": "projects/test-app/src/app/app.module.ts",
+            "file": "projects/catalogue-app/src/app/app.module.ts",
             "methods": [],
             "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\n\nimport { AppComponent } from './app.component';\nimport { CartagoLibraryModule } from 'cartago-lib';\n\n@NgModule({\n  declarations: [AppComponent],\n  imports: [BrowserModule, CartagoLibraryModule],\n  providers: [],\n  bootstrap: [AppComponent],\n})\nexport class AppModule {}\n",
             "children": [
@@ -987,7 +987,7 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/test-app/src/environments/environment.prod.ts",
+                "file": "projects/catalogue-app/src/environments/environment.prod.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
@@ -997,7 +997,7 @@
                 "name": "environment",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "projects/test-app/src/environments/environment.ts",
+                "file": "projects/catalogue-app/src/environments/environment.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
@@ -1165,24 +1165,24 @@
                     "defaultValue": "{\r\n  components: [],\r\n  utils: [],\r\n\r\n}"
                 }
             ],
-            "projects/test-app/src/environments/environment.prod.ts": [
+            "projects/catalogue-app/src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/test-app/src/environments/environment.prod.ts",
+                    "file": "projects/catalogue-app/src/environments/environment.prod.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\n  production: true\n}"
                 }
             ],
-            "projects/test-app/src/environments/environment.ts": [
+            "projects/catalogue-app/src/environments/environment.ts": [
                 {
                     "name": "environment",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "projects/test-app/src/environments/environment.ts",
+                    "file": "projects/catalogue-app/src/environments/environment.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
@@ -1566,7 +1566,7 @@
                 "status": "very-good"
             },
             {
-                "filePath": "projects/test-app/src/app/app.component.ts",
+                "filePath": "projects/catalogue-app/src/app/app.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "AppComponent",
@@ -1575,7 +1575,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/test-app/src/environments/environment.prod.ts",
+                "filePath": "projects/catalogue-app/src/environments/environment.prod.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -1585,7 +1585,7 @@
                 "status": "low"
             },
             {
-                "filePath": "projects/test-app/src/environments/environment.ts",
+                "filePath": "projects/catalogue-app/src/environments/environment.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",

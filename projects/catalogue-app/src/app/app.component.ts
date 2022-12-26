@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { LibraryConfig } from 'cartago-lib';
+import { Title } from '@angular/platform-browser';
+import { CatalogueConfig } from 'cartago-lib';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { LibraryConfig } from 'cartago-lib';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'testApp';
+  public hierarchy = CatalogueConfig;
 
-  public hierarchy = LibraryConfig;
+
 }

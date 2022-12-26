@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LibraryConfig } from '../../../../config/config.model';
 
 @Component({
-  selector: 'lib-component-button',
+  selector: 'cn-component-button',
   templateUrl: './button.component.html',
   styleUrls: ['./button.component.css'],
 })

@@ -1,12 +1,11 @@
-import { proxyArrayObserver, fileNameConverter } from '../lib/utils/utils';
-import { singularConverter } from '../lib/utils/strings/singular-converter';
+import { getFileData } from '../lib/helpers/strings/get-file-data';
+import { proxyArrayObserver } from '../lib/helpers/helpers';
 
 /**
  * ? Tipos de elementos de la libreria
  */
 export type TLibraryType =
   | 'components'
-  | 'utils'
   | 'services'
   | 'models'
   | 'pipes'
@@ -25,10 +24,21 @@ export interface ILibraryElement {
   fileNameFormated?: string;
   fileNameWithSubextension?: string;
   fileExtension?: string;
+  folder?: string;
   source?: string;
   subtype?: 'pures' | 'compounds';
   description?: string;
   details?: any;
+}
+
+/**
+ * ? Interfaz de elementos de tipo componente
+ */
+export interface ILibraryElementComponent extends ILibraryElement {
+  fileStyle?: string;
+  fileStyleSource?: string;
+  fileTemplate?: string;
+  fileTemplateSource?: string;
 }
 
 /**
@@ -81,35 +91,33 @@ export class LibraryConfig implements ILibraryConfig {
    * @returns {ILibraryElement} - Retorna el
    */
   private _changerType = (elem: ILibraryElement, prop: TLibraryType) => {
-    //* Añadimos el tipo del elemento segun el array donde ha sido colocado
-    elem.type = prop;
-    const subextension = singularConverter(elem.type);
+    getFileData(elem.name, prop);
 
-    //* Creamos los nombres del archivo y sus extensiones
-    const dataExtension = fileNameConverter(
-      elem.name,
-      'kebab-case',
-      subextension
-    );
-    elem.file = dataExtension.fileName;
-    elem.fileExtension = dataExtension.extension;
-    elem.fileNameWithSubextension = dataExtension.nameWithSubextension;
-    elem.fileNameFormated = dataExtension.nameFormated;
-
-    elem.element =
-      fileNameConverter(elem.name, 'PascalCase').nameFormated +
-      singularConverter(
-        fileNameConverter(elem.type, 'PascalCase').nameFormated
-      );
-
-    //* Creamos el source del elemento
-    elem.source =
-      './lib/' +
-      prop +
-      '/' +
-      (!!elem.subtype ? elem.subtype + '/' : '') +
-      elem.file;
-
+    //   //* Añadimos el tipo del elemento segun el array donde ha sido colocado
+    //   elem.type = prop;
+    //   const subextension = singularConverter(elem.type);
+    //   //* Creamos los nombres del archivo y sus extensiones
+    //   const dataExtension = fileNameConverter(
+    //     elem.name,
+    //     'kebab-case',
+    //     subextension
+    //   );
+    //   elem.file = dataExtension.fileName;
+    //   elem.fileExtension = dataExtension.extension;
+    //   elem.fileNameWithSubextension = dataExtension.nameWithSubextension;
+    //   elem.fileNameFormated = dataExtension.nameFormated;
+    //   elem.element =
+    //     fileNameConverter(elem.name, 'PascalCase').nameFormated +
+    //     singularConverter(
+    //       fileNameConverter(elem.type, 'PascalCase').nameFormated
+    //     );
+    //   //* Creamos el source del elemento
+    //   elem.source =
+    //     './lib/' +
+    //     prop +
+    //     '/' +
+    //     (!!elem.subtype ? elem.subtype + '/' : '') +
+    //     elem.file;
     return elem;
   };
 }
