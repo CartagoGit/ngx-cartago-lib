@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CartagoLibComponent } from './cartago-lib.component';
+import { CommonModule } from '@angular/common';
 
 
 
@@ -8,9 +9,10 @@ import { CartagoLibComponent } from './cartago-lib.component';
     CartagoLibComponent
   ],
   imports: [
+    CommonModule
   ],
   exports: [
-    CartagoLibComponent
+    // CartagoLibComponent
   ]
 })
 export class CartagoLibModule { }

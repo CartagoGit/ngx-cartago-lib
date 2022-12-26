@@ -10,7 +10,8 @@
     "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
     "storybook": "npm run docs:json && start-storybook -p 6006",
     "build-storybook": "npm run docs:json && build-storybook",
-    "dev": "start npm run start & start npm run storybook"
+    "watch-lib" : "ng build cartago-lib --watch",
+    "dev": "start npm run watch-lib & start npm run storybook & start npm run start"
   },
   "private": false,
   "dependencies": {
@@ -22,9 +23,7 @@
     "@angular/platform-browser": "^15.0.4",
     "@angular/platform-browser-dynamic": "^15.0.4",
     "@angular/router": "^15.0.4",
-    "npm-run-all": "^4.1.5",
     "rxjs": "~7.8.0",
-    "testApp": "^3.0.2",
     "tslib": "^2.4.1",
     "zone.js": "~0.12.0"
   },
@@ -44,7 +43,7 @@
     "@storybook/testing-library": "^0.0.13",
     "@types/jasmine": "~4.3.1",
     "babel-loader": "^9.1.0",
-    "cartago-lib": "file:./dist/cartago-lib",
+    "cartago-lib": "file:../ngx-cartago-lib/dist/cartago-lib",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.1",
@@ -52,6 +51,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
     "ng-packagr": "^15.0.3",
-    "typescript": "^4.9.4"
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.8.4"
   }
 }
