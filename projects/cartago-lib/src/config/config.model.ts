@@ -19,8 +19,8 @@ export type TLibraryType =
  */
 export interface ILibraryElement {
   name: string;
-  type: TLibraryType;
-  element: any;
+  type?: TLibraryType;
+  element?: any;
   file?: string;
   fileNameFormated?: string;
   fileNameWithSubextension?: string;
@@ -107,7 +107,7 @@ export class LibraryConfig implements ILibraryConfig {
       './lib/' +
       prop +
       '/' +
-      (!!elem.subtype && elem.subtype + '/') +
+      (!!elem.subtype ? elem.subtype + '/' : '') +
       elem.file;
 
     return elem;
