@@ -5,5 +5,5 @@
  * @returns {boolean}
  */
 export const isKeyInObject = (obj: any, word: string): boolean => {
-  return Object.keys(obj).some((elem) => elem === word);
+  return !!obj ? Object.keys(obj).some((elem) => elem === word) : false;
 };

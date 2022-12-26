@@ -4,31 +4,60 @@ import {
   IFileData,
   IFileDataCreated,
 } from '../../models/file.model';
-import { isKeyInObject, formatConverter, singularConverter } from '../helpers';
+import {
+  isKeyInObject,
+  formatConverter,
+  singularConverter,
+  capitalizeConverter,
+} from '../helpers';
 
-export const getFileData = (name: string, data: IFileDataArgs, object: any) => {
-  Object.values(data).map((elem) => elem);
-  const { type, subtype, extension = 'ts', subextension, from } = data;
+export const getFileData = (
+  name: string,
+  data: IFileDataArgs,
+  object: any
+): IFileData => {
+  let { type, subtype, extension = 'ts', subextension, from = 'lib' } = data;
   const file: { [key in keyof IFileDataCreated]?: string } = {
     fileName: getFileName(name),
-    folder: getFileFolder(from, type, subtype),
+    path: getFilePath(from, type, subtype),
   };
 
-  // console.log(isType(type));
-  // console.log(isType());
-  // console.log((type is TLibraryType));
-
-  //* Metodo que van a ejecutar
+  //* Metodo que van a ejecutar todos los elementos
   const defaulMethodType = () => {
-    data.subextension = type && singularConverter(type);
+    subextension = !!type ? singularConverter(type) : subextension;
+    file.elementName = getElementName(name, 'class');
   };
 
+  //* Metodo para elementos propios de angular
+  const angularMethodType = () => {
+    //Nombre
+    file.elementName =
+      getElementName(name, 'class') +
+      capitalizeConverter(singularConverter(type as string));
+    //Selector
+    type !== 'services' &&
+      (file.selector =
+        'cn-' + subextension + '-' + file.fileName?.toLowerCase());
+    //
+    // Style & Template
+  };
+
+  //* Metodos especificos segun
   const methodType: { [key in TLibraryType]?: () => void } = {
     helpers: () => {
-      data.subextension = undefined;
+      subextension = subextension;
+      file.elementName = getElementName(name, 'function');
     },
     styles: () => {
-      data.subextension = undefined;
+      subextension = undefined;
+      file.elementName = getElementName(name, 'style');
+    },
+    utils: () => {
+      subextension = undefined;
+      file.elementName = getElementName(name, 'function');
+    },
+    models: () => {
+      file.elementName = getElementName(name, 'class');
     },
   };
 
@@ -36,25 +65,34 @@ export const getFileData = (name: string, data: IFileDataArgs, object: any) => {
   if (!!type && isKeyInObject(object, type as string)) {
     defaulMethodType();
     const typeLibrary = type as TLibraryType;
-    !!methodType[typeLibrary!] && //* Comprueba si hay metodo especifico para el tipo
-      methodType[typeLibrary!]!()!;
+    !!methodType[typeLibrary!] //* Comprueba si hay metodo especifico para el tipo
+      ? methodType[typeLibrary!]!()!
+      : angularMethodType();
   } else defaulMethodType(); //* Si no hay tipo hacer el defecto
 
-  console.log(type, methodType[type! as TLibraryType]);
+  //* Añadimos el dato del archivo con su subextension
+  !!subextension &&
+    (file.fileWithSubextension = getFileNameWithExtension(
+      file.fileName!,
+      subextension
+    ));
 
-  // !!type
-  //   ?
+  //* Añadimos el nombre completo del archivo
+  file.file = getFileNameWithExtension(
+    !!file.fileWithSubextension ? file.fileWithSubextension : file.fileName!,
+    extension
+  );
+
+  //* Añadimos la ruta completa del elemento
+  file.source = getFileSource(file.file!, file.path!);
 
   return {
-    ...data,
+    type,
+    subtype,
+    subextension,
+    from,
     extension,
     ...file,
-    // file: '',
-    // source: '',
-    // fileNameWithExtension: '',
-    // fileName: getFileName(name),
-    // folder: getFileFolder(from, type, subtype),
-    // elementName: formatConverter(name, 'PascalCase'),
   } as IFileData;
 };
 
@@ -67,32 +105,88 @@ export const getFileName = (name: string): string => {
   return formatConverter(name);
 };
 
-const getElementName = (name: string): string => {
+/**
+ * ? Formatea el nombre del elemento segun el tipo de elemento
+ * @param {string} name
+ * @param {(| 'class'
+    | 'method'
+    | 'service'
+    | 'function'
+    | 'variable'
+    | 'interfaz'
+    | 'type'
+    | 'constant'
+    | 'style')} type
+ * @returns {string}
+ */
+export const getElementName = (
+  name: string,
+  type:
+    | 'class'
+    | 'method'
+    | 'service'
+    | 'function'
+    | 'variable'
+    | 'interfaz'
+    | 'type'
+    | 'constant'
+    | 'style'
+): string => {
   // return formatConverter(name, 'PascalCase')
-  return '';
+  if (type.match('/|class|service|pipe|directive|/i'))
+    return formatConverter(name, 'PascalCase');
+  else if (type.match('/|method|function|variable|/i'))
+    return formatConverter(name, 'camelCase');
+  else if (type.match('/|style|/i')) return formatConverter(name, 'kebab-case');
+  else if (type.match('/|constant|/i'))
+    return formatConverter(name, 'snake_case', {
+      everyWordUppercase: type === 'constant',
+      everyWordLowercase: type !== 'constant',
+    });
+  else if (type.match('/|interfaz|type|/i'))
+    return 'I' + formatConverter(name, 'PascalCase');
+  return name;
 };
 
 /**
- * ? Recupera el nombre del archivo con subextension
+ * ? Recupera el nombre del archivo añadiendole una extension
  * @param {string} name
- * @param {string} subextension
+ * @param {string} extension
  * @returns {string}
  */
-export const getFileNameWithSubextension = (
+export const getFileNameWithExtension = (
   name: string,
-  subextension: string
-) => {
-  return name + '.' + subextension;
+  extension: string
+): string => {
+  return name + '.' + extension;
 };
 
-export const getFileFolder = (
+/**
+ * ? Devuelve la ruta segun su procedendia, su tipo y su subtipo
+ * @param {?string} [from]
+ * @param {?(TLibraryType | string)} [type]
+ * @param {?string} [subtype]
+ * @returns {string}
+ */
+export const getFilePath = (
   from?: string,
   type?: TLibraryType | string,
   subtype?: string
 ) => {
-  return '';
+  return (
+    './' +
+    (!!from ? from + '/' : '') +
+    (!!type ? type + '/' : '') +
+    (!!subtype ? subtype + '/' : '')
+  );
 };
 
-export const getFileSource = () => {
-  return '';
+/**
+ * ? Dando la ruta y el nomobre del archivo completo, devuelve la ruta completa
+ * @param nameWithExtensions
+ * @param path
+ * @returns
+ */
+export const getFileSource = (nameWithExtensions: string, path: string) => {
+  return path + nameWithExtensions;
 };

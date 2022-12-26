@@ -4,6 +4,7 @@ const config = new LibraryConfig();
 
 config.components.push({
   name: 'Elemento de prueba',
+  fileData: { subtype: 'pures' },
 
   description: 'Es un simple elemento de prueba',
 });

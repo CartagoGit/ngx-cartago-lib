@@ -20,10 +20,7 @@ export type TLibraryType =
  */
 export interface ILibraryElement {
   name: string;
-  type?: TLibraryType;
-  element?: any;
-  file?: IFileData;
-  subtype?: 'pures' | 'compounds' | 'core';
+  fileData?: IFileData;
   description?: string;
   details?: any;
 }
@@ -34,10 +31,6 @@ export interface ILibraryElement {
 export type ILibraryConfig = {
   [key in TLibraryType]: ILibraryElement[];
 };
-
-// export interface ILibraryConfig extends ILibraryTypeConfig {
-//   config: ILibraryElement;
-// }
 
 /**
  * ? Clase de la configuracion de la Librería
@@ -87,38 +80,11 @@ export class LibraryConfig implements ILibraryConfig {
     elem: ILibraryElement,
     prop: TLibraryType
   ): ILibraryElement => {
-    elem.file = getFileData(elem.name, { type: prop }, this);
-
-    // getFileData(
-    //   { name: 'no es un elemento', type: 'un elemento sin tipo' },
-    //   this
-    // );
-
-    //   //* Añadimos el tipo del elemento segun el array donde ha sido colocado
-    //   elem.type = prop;
-    //   const subextension = singularConverter(elem.type);
-    //   //* Creamos los nombres del archivo y sus extensiones
-    //   const dataExtension = fileNameConverter(
-    //     elem.name,
-    //     'kebab-case',
-    //     subextension
-    //   );
-    //   elem.file = dataExtension.fileName;
-    //   elem.fileExtension = dataExtension.extension;
-    //   elem.fileNameWithSubextension = dataExtension.nameWithSubextension;
-    //   elem.fileNameFormated = dataExtension.nameFormated;
-    //   elem.element =
-    //     fileNameConverter(elem.name, 'PascalCase').nameFormated +
-    //     singularConverter(
-    //       fileNameConverter(elem.type, 'PascalCase').nameFormated
-    //     );
-    //   //* Creamos el source del elemento
-    //   elem.source =
-    //     './lib/' +
-    //     prop +
-    //     '/' +
-    //     (!!elem.subtype ? elem.subtype + '/' : '') +
-    //     elem.file;
+    elem.fileData = getFileData(
+      elem.name,
+      { ...elem.fileData, type: prop },
+      this
+    );
     return elem;
   };
 }

@@ -5,7 +5,7 @@ import { TLibraryType } from '../../config/config.model';
  */
 export interface IFileDataArgs {
   type?: TLibraryType | string;
-  subtype?: string;
+  subtype?: 'pures' | 'compounds' | 'core';
   subextension?: string;
   extension?: string;
   from?: string;
@@ -15,12 +15,21 @@ export interface IFileDataArgs {
  * ? Interfaz de datos a crear segun la información recibida en getFileData()
  */
 export interface IFileDataCreated {
-  file: string;
-  folder: string;
-  fileName: string;
-  fileNameWithExtension: string;
-  source: string;
-  elementName: string;
+  file?: string;
+  path?: string;
+  fileName?: string;
+  fileWithSubextension?: string;
+  source?: string;
+  elementName?: string;
+  selector?: string;
+  styles?: {
+    file: string;
+    source: string;
+  };
+  template?: {
+    file: string;
+    source: string;
+  };
 }
 
 /**

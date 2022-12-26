@@ -1,47 +1,4 @@
-/**
- * ? Convertidor de string a nombre de archivo, segun el typo de formato, su subextension, y su extension de archivo
- * @param {string} name
- * @param {(| 'camelCase'
-    | 'PascalCase'
-    | 'snake_case'
-    | 'kebab-case')} [typeConverter='kebab-case']
- * @param {(string | undefined)} [subextension=undefined]
- * @param {string} [extension='ts']
- * @returns {fileName : string, nameFormated : string, nameWithSubextension : string}
- * - Retorna un objeto con el nombre formateado, el nombre completo del archivo, el nombre con la subextension formateada y la extension del archivo
- */
-// export const fileNameConverter = (
-//   name: string,
-//   typeConverter:
-//     | 'camelCase'
-//     | 'PascalCase'
-//     | 'snake_case'
-//     | 'kebab-case' = 'kebab-case',
-//   subextension?: string,
-//   extension: string = 'ts'
-// ): {
-//   fileName: string;
-//   nameFormated: string;
-//   nameWithSubextension: string;
-//   extension: string;
-// } => {
-//   const nameFormated = name
-//     .split(' ')
-//     .map((word, index, array) => {
-//       word = word.toLowerCase();
-//       if (index === 0 && typeConverter === 'camelCase') return word;
-//       else if (typeConverter === 'PascalCase' || typeConverter === 'camelCase')
-//         return word.charAt(0).toUpperCase() + word.slice(1);
-//       else if (index === array.length - 1) return word;
-//       else return typeConverter === 'snake_case' ? word + '_' : word + '-';
-//     })
-//     .join('');
-//   const nameWithSubextension = !!subextension
-//     ? nameFormated + '.' + subextension
-//     : nameFormated;
-//   const fileName = nameWithSubextension + '.' + extension;
-//   return { fileName, nameFormated, nameWithSubextension, extension };
-// };
+import { IFormatConverterOptions } from '../../models/strings-helper.model';
 
 /**
  * ? Convierte un string al tipo de formato
@@ -50,6 +7,11 @@
     | 'PascalCase'
     | 'snake_case'
     | 'kebab-case')} [typeConverter='kebab-case']
+ * @param {IFormatConverterOptions} [options={
+    everyWordUppercase: false,
+    everyWordLowercase: true,
+    needTrim: true,
+  }]
  * @returns {string}
  */
 export const formatConverter = (
@@ -58,13 +20,22 @@ export const formatConverter = (
     | 'camelCase'
     | 'PascalCase'
     | 'snake_case'
-    | 'kebab-case' = 'kebab-case'
+    | 'kebab-case' = 'kebab-case',
+  options: IFormatConverterOptions = {
+    everyWordUppercase: false,
+    everyWordLowercase: true,
+    needTrim: true,
+  }
 ): string => {
+  name = separatorUpperCaseConverter(name);
   return name
     .trim()
     .split(' ')
     .map((word, index, array) => {
-      word = word.toLowerCase().trim();
+      options.needTrim && (word = word.trim());
+      options.everyWordLowercase && (word = word.toLowerCase());
+      options.everyWordUppercase && (word = word.toUpperCase());
+      console.log(word, array);
       if (index === 0 && typeConverter === 'camelCase') return word;
       else if (typeConverter === 'PascalCase' || typeConverter === 'camelCase')
         return capitalizeConverter(word);
@@ -80,7 +51,7 @@ export const formatConverter = (
  * @returns {string}
  */
 export const singularConverter = (word: string): string => {
-  return word.slice(0, word.length - 1);
+  return word.trim().slice(0, word.length - 1);
 };
 
 /**
@@ -89,7 +60,7 @@ export const singularConverter = (word: string): string => {
  * @returns {string}
  */
 export const pluralConverter = (word: string): string => {
-  return word + 's';
+  return word.trim() + 's';
 };
 
 /**
@@ -98,5 +69,14 @@ export const pluralConverter = (word: string): string => {
  * @returns
  */
 export const capitalizeConverter = (word: string): string => {
-  return word.charAt(0).toUpperCase() + word.slice(1);
+  return word.trim().charAt(0).toUpperCase() + word.slice(1);
+};
+
+/**
+ * ? Separa las palabras que empiezan por mayusculas en un string
+ * @param {string} word
+ * @returns {string}
+ */
+export const separatorUpperCaseConverter = (word: string): string => {
+  return word.split(/(?=[A-Z])/).join(' ');
 };
