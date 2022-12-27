@@ -23,12 +23,12 @@ export interface IFileDataCreated {
   elementName?: string;
   selector?: string;
   styles?: {
-    file: string;
-    source: string;
+    file?: string;
+    source?: string;
   };
   template?: {
-    file: string;
-    source: string;
+    file?: string;
+    source?: string;
   };
 }
 
@@ -36,13 +36,3 @@ export interface IFileDataCreated {
  * ? Interfaz de los datos de la informacion del archivo
  */
 export type IFileData = IFileDataArgs & IFileDataCreated;
-
-/**
- * ? Interfaz de los archivos de elementos de tipo componente
- */
-export interface IFileDataComponent extends IFileData {
-  fileStyle?: string;
-  fileStyleSource?: string;
-  fileTemplate?: string;
-  fileTemplateSource?: string;
-}

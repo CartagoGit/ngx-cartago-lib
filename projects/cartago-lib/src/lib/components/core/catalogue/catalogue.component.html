@@ -1,4 +1,13 @@
-<div *ngFpr="let type of selectedType">
-  {{ type | json }}
+<div class="catalogue">
+  <div class="catalogue__types">
+    <!-- <div class="catalogue__type">{{all}}</div> -->
+    <div *ngFor="let type of listTypes" class="catalogue__type">
+      {{ type }}
+    </div>
+  </div>
+  <div class="catalogue__elements">
+    <div *ngFor="let element of selectedList" class="catalogue__element">
+      <pre>{{ element | json }}</pre>
+    </div>
+  </div>
 </div>
-<!-- <pre>{{ hierarchy | json }}</pre> -->

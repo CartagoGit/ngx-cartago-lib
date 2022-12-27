@@ -3,7 +3,7 @@ import {
   IFileDataArgs,
   IFileData,
   IFileDataCreated,
-} from '../../models/file.model';
+} from '../../models/files.model';
 import {
   isKeyInObject,
   formatConverter,
@@ -17,7 +17,7 @@ export const getFileData = (
   object: any
 ): IFileData => {
   let { type, subtype, extension = 'ts', subextension, from = 'lib' } = data;
-  const file: { [key in keyof IFileDataCreated]?: string } = {
+  const file: IFileDataCreated = {
     fileName: getFileName(name),
     path: getFilePath(from, type, subtype),
   };
@@ -38,8 +38,6 @@ export const getFileData = (
     type !== 'services' &&
       (file.selector =
         'cn-' + subextension + '-' + file.fileName?.toLowerCase());
-    //
-    // Style & Template
   };
 
   //* Metodos especificos segun
@@ -85,6 +83,23 @@ export const getFileData = (
 
   //* Añadimos la ruta completa del elemento
   file.source = getFileSource(file.file!, file.path!);
+
+  //* Si es un componente añadimos el template y el estilo
+  if (type === 'components') {
+    file.styles = {};
+    file.template = {};
+    file.styles!.file = getFileNameWithExtension(
+      file.fileWithSubextension!,
+      'scss'
+    );
+    file.styles!.source = getFileSource(file.styles!.file, file.path!);
+
+    file.template!.file = getFileNameWithExtension(
+      file.fileWithSubextension!,
+      'html'
+    );
+    file.template!.source = getFileSource(file.template!.file, file.path!);
+  }
 
   return {
     type,

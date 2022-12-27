@@ -1,6 +1,6 @@
 import { getFileData } from '../lib/helpers/strings/get-file-data';
 import { proxyArrayObserver } from '../lib/helpers/helpers';
-import { IFileData } from '../lib/models/file.model';
+import { IFileData } from '../lib/models/files.model';
 
 /**
  * ? Tipos de elementos de la libreria
@@ -23,6 +23,7 @@ export interface ILibraryElement {
   fileData?: IFileData;
   description?: string;
   details?: any;
+  functions?: { name: string; code: string; description: string }[];
 }
 
 /**
@@ -58,7 +59,7 @@ export class LibraryConfig implements ILibraryConfig {
   /**
    * ? Proxy para cada array para añadir un listener cada vez que se opere con alguno de los array
    */
-  private _proxyArrayMethods = () => {
+  private _proxyArrayMethods() {
     //* Añadimos el Listener a cada array de la clase
     Object.entries(this).forEach(([key, array]) => {
       if (Array.isArray(array)) {
@@ -67,7 +68,7 @@ export class LibraryConfig implements ILibraryConfig {
         );
       }
     });
-  };
+  }
 
   /**
    * ? Formatea el elemento, su nombre el nombre del componente al modificarlo en el array
@@ -76,15 +77,15 @@ export class LibraryConfig implements ILibraryConfig {
    * @param {TLibraryType} prop
    * @returns {ILibraryElement} - Retorna el
    */
-  private _changerType = (
+  private _changerType(
     elem: ILibraryElement,
     prop: TLibraryType
-  ): ILibraryElement => {
+  ): ILibraryElement {
     elem.fileData = getFileData(
       elem.name,
       { ...elem.fileData, type: prop },
       this
     );
     return elem;
-  };
+  }
 }

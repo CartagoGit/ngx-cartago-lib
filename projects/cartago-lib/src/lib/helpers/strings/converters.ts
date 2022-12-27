@@ -35,7 +35,6 @@ export const formatConverter = (
       options.needTrim && (word = word.trim());
       options.everyWordLowercase && (word = word.toLowerCase());
       options.everyWordUppercase && (word = word.toUpperCase());
-      console.log(word, array);
       if (index === 0 && typeConverter === 'camelCase') return word;
       else if (typeConverter === 'PascalCase' || typeConverter === 'camelCase')
         return capitalizeConverter(word);
