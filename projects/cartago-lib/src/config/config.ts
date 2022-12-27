@@ -13,6 +13,21 @@ config.components.push({
 
   description: 'Es un simple elemento de prueba 2',
 });
+config.components.push({
+  name: 'Elemento de prueba 2 ',
+
+  description: 'Es un simple elemento de prueba 2',
+});
+config.components.push({
+  name: 'Elemento de prueba 2 ',
+
+  description: 'Es un simple elemento de prueba 2',
+});
+config.components.push({
+  name: 'Elemento de prueba 2 ',
+
+  description: 'Es un simple elemento de prueba 2',
+});
 config.utils.push({
   name: 'Elemento de prueba 2 ',
 

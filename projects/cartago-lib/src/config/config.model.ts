@@ -23,6 +23,7 @@ export interface ILibraryElement {
   fileData?: IFileData;
   description?: string;
   details?: any;
+  image?: string;
   functions?: { name: string; code: string; description: string }[];
 }
 

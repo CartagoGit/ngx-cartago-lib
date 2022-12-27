@@ -25,23 +25,22 @@ export class CatalogueComponent {
   private _selectedType: string = 'components';
   set selectedType(value: string) {
     this._selectedType = value;
-    this.isConfigSelected = false;
     if (value !== 'config' && value !== 'all')
       this.selectedList = this.hierarchy[
         value as TLibraryType
       ] as ILibraryElement[];
-    else this.isConfigSelected = true;
+    else if (value === 'config') {
+      this.selectedList = [this.hierarchy[value]];
+    }
+  }
+  get selectedType() {
+    return this._selectedType;
   }
 
   /**
    * ? Categoria seleccionada de la libreria
    */
   public selectedList: ILibraryElement[] = [];
-
-  /**
-   * ? Boolean para saber si se ha seleccionado mostrar la configuracion en el catalogo
-   */
-  public isConfigSelected: boolean = false;
 
   /**
    * ? Tipos de elementos de la libreria
@@ -65,15 +64,21 @@ export class CatalogueComponent {
       ...Object.getOwnPropertyNames(this.hierarchy),
     ];
     this.listTypes = this.listTypes.map((type) => capitalizeConverter(type));
+
+    //* Para forzar el setter en el momento que se han construido los elementos
     this.selectedType = this._selectedType;
   }
 
-  ngAfterViewInit(): void {
-    //* Para forzar el setter en el momento que se han construido los elementos
-    // Object.keys(this.hierarchy).forEach((elem) => {
-    //   this.listTypes.push(elem);
-    // });
-  }
-
   // ANCHOR - Métodos
+
+
+  /**
+   * ? Click en cualquiera de lo tipos
+   * @public
+   * @param {string} type
+   */
+  public clickType(type: string): void {
+    this.selectedType = type.toLowerCase();
+    console.log(this.selectedType);
+  }
 }

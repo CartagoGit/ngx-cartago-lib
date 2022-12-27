@@ -1,13 +1,22 @@
 <div class="catalogue">
   <div class="catalogue__types">
-    <!-- <div class="catalogue__type">{{all}}</div> -->
-    <div *ngFor="let type of listTypes" class="catalogue__type">
+    <div
+      *ngFor="let type of listTypes"
+      class="catalogue__type"
+      (click)="clickType(type)"
+    >
       {{ type }}
     </div>
   </div>
   <div class="catalogue__elements">
-    <div *ngFor="let element of selectedList" class="catalogue__element">
-      <pre>{{ element | json }}</pre>
+    <div *ngIf="selectedType === 'all'; else list" class="catalogue__element">
+      <pre>{{ hierarchy | json }}</pre>
     </div>
+
+    <ng-template #list>
+      <div *ngFor="let element of selectedList" class="catalogue__element">
+        <pre>{{ element | json }}</pre>
+      </div>
+    </ng-template>
   </div>
 </div>
