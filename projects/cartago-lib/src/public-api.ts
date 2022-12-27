@@ -31,3 +31,5 @@ export * from './lib/components/pures/button/button.component';
 
 //? Modulo de componentes compuestos
 export * from './lib/components/compounds/compounds.module';
+
+

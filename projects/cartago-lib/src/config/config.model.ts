@@ -76,7 +76,7 @@ export class LibraryConfig implements ILibraryConfig {
    * ? Listener/Callback a añadir al proxy cuando los arrays cambien
    * @param {ILibraryElement} elem
    * @param {TLibraryType} prop
-   * @returns {ILibraryElement} - Retorna el
+   * @returns {ILibraryElement} - Retorna el elemento formateado cada vez que se haga un push o un cambio en el array
    */
   private _changerType(
     elem: ILibraryElement,

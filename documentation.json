@@ -283,7 +283,7 @@
             "propertiesClass": [
                 {
                     "name": "title",
-                    "defaultValue": "'testApp'",
+                    "defaultValue": "'catalogueApp'",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
@@ -300,7 +300,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent {\n  title = 'testApp';\n}\n",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html',\n  styleUrls: ['./app.component.scss']\n})\nexport class AppComponent {\n  title = 'catalogueApp';\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
