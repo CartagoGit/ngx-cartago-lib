@@ -71,14 +71,14 @@ export class CatalogueComponent {
 
   // ANCHOR - Métodos
 
-
   /**
    * ? Click en cualquiera de lo tipos
    * @public
    * @param {string} type
    */
-  public clickType(type: string): void {
+  public clickType(event: Event, type: string): void {
     this.selectedType = type.toLowerCase();
+    console.log(event);
     console.log(this.selectedType);
   }
 }

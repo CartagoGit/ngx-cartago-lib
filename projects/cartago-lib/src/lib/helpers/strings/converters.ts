@@ -79,3 +79,26 @@ export const capitalizeConverter = (word: string): string => {
 export const separatorUpperCaseConverter = (word: string): string => {
   return word.split(/(?=[A-Z])/).join(' ');
 };
+
+/**
+ *
+ * @param {string} name
+ * @param {string} [type='']
+ * @param {string} [prefix='']
+ * @returns {string}
+ */
+export const classNameConverter = (
+  name: string,
+  type: string = '',
+  prefix: string = ''
+): string => {
+  const nameConverted =
+    (!!prefix ? prefix + '-' : '') +
+    separatorUpperCaseConverter(name.trim())
+      .toLowerCase()
+      .split(' ')
+      .filter((word) => word !== type)
+      .join('-');
+
+  return nameConverted;
+};

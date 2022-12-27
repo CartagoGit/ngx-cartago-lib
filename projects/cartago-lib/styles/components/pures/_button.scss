@@ -1,0 +1,36 @@
+.cn-button {
+  cursor: pointer;
+  font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  border: 2px solid transparent;
+  border-radius: 10px;
+  display: inline-block;
+  // transition: filter ease 300ms, outline ease 300ms, border ease 300ms;
+
+  // outline-offset: -6px;
+  // outline: 1px solid transparent;
+
+  &:focus {
+    // outline: 1px solid grey;
+  }
+
+  &--selected {
+    border: 2px solid black;
+  }
+
+  &--small {
+    font-size: 12px;
+    padding: 10px 16px;
+    font-weight: 400;
+  }
+  &--medium {
+    font-size: 14px;
+    padding: 11px 20px;
+    font-weight: 600;
+  }
+  &--large {
+    font-size: 16px;
+    padding: 12px 24px;
+    font-weight: 700;
+  }
+}

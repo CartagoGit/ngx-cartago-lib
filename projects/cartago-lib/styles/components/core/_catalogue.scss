@@ -1,0 +1,9 @@
+.cn-catalogue {
+  &__types {
+    display: flex;
+    justify-content: center;
+  }
+  &__type {
+    margin: 5px 10px;
+  }
+}

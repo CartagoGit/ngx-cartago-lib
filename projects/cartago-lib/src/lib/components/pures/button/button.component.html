@@ -1,1 +1,3 @@
-<button type="button">Hola pero actualiza?</button>
+<button type="button" (click)="onClick.emit($event)" [ngClass]="getClasses" [ngStyle]="getStyles">
+  {{ label }}
+</button>
