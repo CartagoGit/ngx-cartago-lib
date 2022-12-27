@@ -10,16 +10,15 @@
       outline-color: rgba(0, 0, 0, 0.5);
       outline-offset: 0px;
     }
-    &:focus,
-    &.selected {
-      &:not(:hover) {
-        border-color: rgba(0, 0, 0, 0.5);
-      }
+    &.selected,
+    &:focus {
+      border-color: rgba(0, 0, 0, 0.5);
     }
     &:focus {
-      &:not(:hover) {
-        border-style: dashed;
-      }
+      border-style: dashed;
+    }
+    &:focus:is(.selected) {
+      border-style: solid;
     }
   }
 }
