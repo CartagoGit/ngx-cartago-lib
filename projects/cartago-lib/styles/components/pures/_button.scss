@@ -1,22 +1,9 @@
 .cn-button {
   cursor: pointer;
   font-family: "Nunito Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-
-  border: 2px solid transparent;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   display: inline-block;
-  // transition: filter ease 300ms, outline ease 300ms, border ease 300ms;
-
-  // outline-offset: -6px;
-  // outline: 1px solid transparent;
-
-  &:focus {
-    // outline: 1px solid grey;
-  }
-
-  &--selected {
-    border: 2px solid black;
-  }
 
   &--small {
     font-size: 12px;
