@@ -6,7 +6,7 @@ import { ILibraryElement } from '../../../../config/config.model';
 @Component({
   selector: 'cn-component-catalogue',
   templateUrl: './catalogue.component.html',
-  styleUrls: ['./catalogue.component.css'],
+  styleUrls: ['./catalogue.component.scss'],
 })
 export class CatalogueComponent {
   // ANCHOR - Variables

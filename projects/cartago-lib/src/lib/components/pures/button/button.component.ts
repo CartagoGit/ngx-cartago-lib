@@ -4,7 +4,7 @@ import { LibraryConfig } from '../../../../config/config.model';
 @Component({
   selector: 'cn-component-button',
   templateUrl: './button.component.html',
-  styleUrls: ['./button.component.css'],
+  styleUrls: ['./button.component.scss'],
 })
 export class ButtonComponent implements OnInit {
   constructor() {}

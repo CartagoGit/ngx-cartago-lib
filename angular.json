@@ -8,6 +8,11 @@
       "root": "projects/cartago-lib",
       "sourceRoot": "projects/cartago-lib/src",
       "prefix": "cn-component",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -34,7 +39,7 @@
         }
       }
     },
-    "testApp": {
+    "catalogueApp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -59,9 +64,7 @@
               "projects/catalogue-app/src/favicon.ico",
               "projects/catalogue-app/src/assets"
             ],
-            "styles": [
-              "projects/catalogue-app/src/styles.scss"
-            ],
+            "styles": ["projects/catalogue-app/src/styles.scss"],
             "scripts": []
           },
           "configurations": {
@@ -127,14 +130,11 @@
               "projects/catalogue-app/src/favicon.ico",
               "projects/catalogue-app/src/assets"
             ],
-            "styles": [
-              "projects/catalogue-app/src/styles.scss"
-            ],
+            "styles": ["projects/catalogue-app/src/styles.scss"],
             "scripts": []
           }
         }
       }
     }
-
   }
 }

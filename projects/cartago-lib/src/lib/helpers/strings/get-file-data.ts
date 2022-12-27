@@ -109,14 +109,14 @@ export const getFileName = (name: string): string => {
  * ? Formatea el nombre del elemento segun el tipo de elemento
  * @param {string} name
  * @param {(| 'class'
-    | 'method'
-    | 'service'
-    | 'function'
-    | 'variable'
-    | 'interfaz'
-    | 'type'
-    | 'constant'
-    | 'style')} type
+		| 'method'
+		| 'service'
+		| 'function'
+		| 'variable'
+		| 'interfaz'
+		| 'type'
+		| 'constant'
+		| 'style')} type
  * @returns {string}
  */
 export const getElementName = (
