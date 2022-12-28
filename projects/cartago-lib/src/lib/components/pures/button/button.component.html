@@ -1,8 +1,11 @@
 <button
-  type="button"
-  (click)="onClick.emit($event)"
-  [ngClass]="getClasses"
-  [ngStyle]="getStyles"
+	type="button"
+	(click)="onClick.emit($event)"
+	(keydown.enter)="onKeyEnter.emit($event)"
+	(blur)="onBlur.emit($event)"
+	(focus)="onFocus.emit($event)"
+	[ngClass]="getClasses"
+	[ngStyle]="getStyles"
 >
-  {{ label }}
+	{{ label }}
 </button>
