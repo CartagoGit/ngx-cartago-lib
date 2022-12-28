@@ -1,6 +1,6 @@
 <div [ngClass]="getClasses" [ngStyle]="getStyles">
-	<div class="cn-catalogue__types">
-		<div *ngFor="let type of listTypes" class="cn-catalogue__type">
+	<div [class]="getClassCssName + '__types'">
+		<div *ngFor="let type of listTypes" [class]="getClassCssName + '__type'">
 			<cn-component-button
 				[label]="type"
 				(onClick)="clickType(type)"
@@ -11,16 +11,19 @@
 			></cn-component-button>
 		</div>
 	</div>
-	<div class="cn-catalogue__elements">
+	<div [class]="getClassCssName + '_elements'">
 		<div
 			*ngIf="selectedType === 'all'; else list"
-			class="cn-catalogue__element"
+			[class]="getClassCssName + '__element'"
 		>
 			<pre>{{ hierarchy | json }}</pre>
 		</div>
 
 		<ng-template #list>
-			<div *ngFor="let element of selectedList" class="cn-catalogue__element">
+			<div
+				*ngFor="let element of selectedList"
+				[class]="getClassCssName + '__element'"
+			>
 				<pre>{{ element | json }}</pre>
 			</div>
 		</ng-template>

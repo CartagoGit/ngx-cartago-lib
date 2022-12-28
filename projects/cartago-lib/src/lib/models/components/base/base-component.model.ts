@@ -97,6 +97,16 @@ export abstract class BaseComponent {
 		return { ...this.styles };
 	}
 
+	/**
+	 * ? Devuelve el nombre de css del componente
+	 * @public
+	 * @readonly
+	 * @type {string}
+	 */
+	public get getClassCssName(): string {
+		return this._classCssName;
+	}
+
 	//!GROUP - FIN - Setters & Getters
 	// ANCHOR - Constructor
 	constructor() {
