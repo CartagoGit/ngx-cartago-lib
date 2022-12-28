@@ -248,7 +248,6 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	 * ? En su lugar hacer override al método this.onInit();
 	 */
 	ngOnInit(): void {
-		// !!this.baseRef?.nativeElement && this._createBaseProperties();
 		//* Llamar al método tras inidicarse paraa añadir las clases de propiedades del componente
 		this._addClasses();
 		!!this.cnOnInit && this.cnOnInit();
@@ -271,7 +270,6 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	 * ? En su lugar hacer override al método this.cnOnChanges();
 	 */
 	ngOnChanges(changes: SimpleChanges): void {
-		console.log(changes['classes']);
 		if (changes['classes'] && !!this.baseRef) {
 			this._assignStylesAndClassesCss();
 		}
