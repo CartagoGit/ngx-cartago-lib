@@ -59,28 +59,19 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	/**
 	 * ? Prefijo a usar en las clases de css
 	 */
-	protected _prefix: string = ENVIRONMENTS.PREFIX;
+	protected readonly _prefix: string = ENVIRONMENTS.PREFIX;
 
 	/**
 	 * ? Tipo de elemento para añadir en la clase css
 	 */
-	protected _type: string = ENVIRONMENTS.TYPES.COMPONENT;
-
-	/**
-	 * ? Atributos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
-	 */
-	protected _baseAttributes!: object;
-
-	/**
-	 * ? Eventos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
-	 */
-	protected _baseEvents!: object;
+	protected readonly _type: string = ENVIRONMENTS.TYPES.COMPONENT;
 
 	//GROUP-SECTION - Estáticos
 	//#region
 
 	/**
 	 * ? Devuelve el nombre del selector del componente
+	 * @static
 	 */
 	static getSelector(): string {
 		return (
@@ -94,6 +85,7 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 
 	/**
 	 * ? Devuelve el nombre de la clase del componente
+	 * @static
 	 */
 	static getComponentName(): string {
 		return this.constructor.name;
@@ -101,6 +93,7 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 
 	/**
 	 * ? Devuelve el nombre de la clase css principal del componente
+	 *  @static
 	 * @returns
 	 */
 	static getClassCss(): string {
@@ -109,6 +102,23 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 			ENVIRONMENTS.TYPES.COMPONENT,
 			ENVIRONMENTS.PREFIX
 		);
+	}
+
+	/**
+	 * ? Devuelve el tipo del componente
+	 * @static
+	 * @returns {string}
+	 */
+	static getType() : string {
+		return ENVIRONMENTS.TYPES.COMPONENT
+	}
+
+	/**
+	 * ? Devuelve el prefijo de la libreria
+	 * @returns
+	 */
+	static getPrefix(): string {
+		return ENVIRONMENTS.PREFIX
 	}
 
 	//!GROUP-SECTION - FIN - Estáticos
@@ -184,6 +194,16 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	 * ? Clases inyectadas por propiedades bindeadas
 	 */
 	protected _bindedClasses: string[] = [];
+
+	/**
+	 * ? Atributos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
+	 */
+	protected _baseAttributes!: { [key in string]: string };
+
+	/**
+	 * ? Eventos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
+	 */
+	protected _baseEvents!: { [key in string]: (event: Event) => void };
 
 	//!GROUP - FIN - Generales
 	//#endregion
