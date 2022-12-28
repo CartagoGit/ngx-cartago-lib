@@ -17,7 +17,9 @@ export type ILibraryType =
 	| 'pipes'
 	| 'directives'
 	| 'helpers'
-	| 'styles';
+	| 'styles'
+	| 'guards'
+	| 'interceptors';
 
 /**
  * ? Tipado de constantes del environment
@@ -58,9 +60,11 @@ export class LibraryConfig implements ILibraryConfig {
 	public components: ILibraryElement[] = [];
 	public utils: ILibraryElement[] = [];
 	public services: ILibraryElement[] = [];
-	public models: ILibraryElement[] = [];
 	public pipes: ILibraryElement[] = [];
 	public directives: ILibraryElement[] = [];
+	public interceptors: ILibraryElement[] = [];
+	public guards: ILibraryElement[] = [];
+	public models: ILibraryElement[] = [];
 	public helpers: ILibraryElement[] = [];
 	public styles: ILibraryElement[] = [];
 

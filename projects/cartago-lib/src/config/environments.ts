@@ -14,5 +14,7 @@ export const ENVIRONMENTS = {
 		SERVICE: 'service',
 		STYLE: 'style',
 		UTIL: 'util',
+		GUARD: 'guard',
+		INTERCEPTOR: 'interceptor',
 	} as ILibraryTypeConstants,
 };

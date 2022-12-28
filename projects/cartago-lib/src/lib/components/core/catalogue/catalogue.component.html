@@ -1,4 +1,4 @@
-<div class="cn-catalogue">
+<div [ngClass]="getClasses" [ngStyle]="getStyles">
 	<div class="cn-catalogue__types">
 		<div *ngFor="let type of listTypes" class="cn-catalogue__type">
 			<cn-component-button
