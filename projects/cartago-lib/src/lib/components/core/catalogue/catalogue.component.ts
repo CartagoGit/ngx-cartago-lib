@@ -74,7 +74,7 @@ export class CatalogueComponent extends BaseComponent {
 	}
 
 	protected _addClasses(){
-		console.log('se creo el catalogo');
+		
 	}
 
 	// ANCHOR - Métodos

@@ -5,10 +5,10 @@
 				[label]="type"
 				(onClick)="clickType(type)"
 				[classes]="[
-					'selected' :selectedType === type.toLowerCase() ,
+					selectedType === type.toLowerCase() ? 'selected' : '',
 					'effect--outline-comming'
 				]"
-				routerLink=""
+				(onKeyEnter)="templateLog($event); templateLog(type)"
 			></cn-component-button>
 		</div>
 	</div>

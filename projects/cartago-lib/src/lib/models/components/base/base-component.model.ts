@@ -125,6 +125,8 @@ export abstract class BaseComponent {
 	 * @methods - protected _addClassModifiersCss(modifiers: string[]): void
 	 * - protected _addClassElementsCss(elements: string[]): void
 	 * - protected _addClassBlockCss(blocks: { element?: string; modifier?: string }[]): void
+	 * - protected _createClassCss(element?: string, modifier?: string): string
+	 * - protected _createClassesCss(blocks: { element?: string; modifier?: string }[]): string[]
 	 */
 	protected abstract _addClasses(): void;
 
@@ -140,6 +142,20 @@ export abstract class BaseComponent {
 			this._classCssName +
 			(!!element ? '__' + element : '') +
 			(!!modifier ? '--' + modifier : '')
+		);
+	}
+
+	/**
+	 * ? Crea una coleccion de clases con sus modificadores según el elemento y modificador pasado en cada elemento del bloque
+	 * @protected
+	 * @param {{ element?: string; modifier?: string }[]} blocks
+	 * @returns {string[]}
+	 */
+	protected _createClassesCss(
+		blocks: { element?: string; modifier?: string }[]
+	): string[] {
+		return blocks.map((block) =>
+			this._createClassCss(block.element, block.modifier)
 		);
 	}
 
@@ -185,5 +201,19 @@ export abstract class BaseComponent {
 	}
 
 	//!GROUP - FIN - Utils para setters
+	//#endregion
+
+	//GROUP - Utils para los componentes
+	//#region
+
+	/**
+	 * ? Muestra el log en consola
+	 * @explain Util para hacer logs desde templates de angular
+	 * @param arg
+	 */
+	public templateLog(arg: any) {
+		console.log(arg);
+	}
+	//!GROUP - FIN - Utils para los componentes
 	//#endregion
 }
