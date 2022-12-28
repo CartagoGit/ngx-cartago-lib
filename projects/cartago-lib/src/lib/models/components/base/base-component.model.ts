@@ -1,9 +1,35 @@
-import { EventEmitter, Input, Output, Component } from '@angular/core';
+import {
+	EventEmitter,
+	Input,
+	Output,
+	Component,
+	ViewChild,
+	ElementRef,
+} from '@angular/core';
 import { classNameConverter } from '../../../helpers/strings/converters';
 import { ENVIRONMENTS } from '../../../../config/environments';
 
+/**
+ * ? Interfaz de clase combinada para hacer opcional onInit en las clases que implementen BaseComponent
+ * * Esta funcion sera llamada justo al terminar ngOnInit con los elementos llamados desde BaseComponent
+ */
 export interface BaseComponent {
 	onInit?(): void;
+}
+
+/**
+ * ? Interfaz con lo datos a emitir al realizarse un evento en el componente
+ */
+interface IEventEmiterBase {
+	elementName: string;
+	component: string;
+	event: Event;
+	label: string;
+	styles: object;
+	ngClasses: string[];
+	bindedClasses: string[];
+	allClases: string[];
+	eventType: string;
 }
 
 @Component({
@@ -29,7 +55,33 @@ export abstract class BaseComponent {
 	 */
 	protected _type: string = ENVIRONMENTS.TYPES.COMPONENT;
 
+	/**
+	 * ? Atributos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
+	 */
+	protected _baseAttributes!: object;
+
+	/**
+	 * ? Eventos que se añadiran al iniciar el componente y se eliminaran al destruir el componente
+	 */
+	protected _baseEvents!: object;
+
 	// !GROUP - FIN - Variables Fijas
+	//#endregion
+
+	// GROUP - Referencias
+	//#region
+	/**
+	 * ? Recupera el elemento #cnBase
+	 */
+	@ViewChild(`${ENVIRONMENTS.PREFIX}Base`, { static: true })
+	baseRef!: ElementRef<HTMLElement>;
+
+	/**
+	 * ? Elemento HTML de #cnBase
+	 */
+	protected baseHtml!: HTMLElement;
+
+	//GROUP - FIN - Referencias
 	//#endregion
 
 	// GROUP - Outputs
@@ -37,22 +89,27 @@ export abstract class BaseComponent {
 	/**
 	 * ?Evento a emitir cuando se clickee en el componente
 	 */
-	@Output() onClick: EventEmitter<Event> = new EventEmitter();
+	@Output() onClick: EventEmitter<IEventEmiterBase> = new EventEmitter();
 
 	/**
 	 * ?Evento a emitir cuando el componente gana el foco
 	 */
-	@Output() onFocus: EventEmitter<Event> = new EventEmitter();
+	@Output() onFocus: EventEmitter<IEventEmiterBase> = new EventEmitter();
 
 	/**
 	 * ?Evento a emitir cuando el componente pierda el foco
 	 */
-	@Output() onBlur: EventEmitter<Event> = new EventEmitter();
+	@Output() onBlur: EventEmitter<IEventEmiterBase> = new EventEmitter();
 
 	/**
 	 * ?Evento a emitir cuando se pulse enter
 	 */
-	@Output() onKeyEnter: EventEmitter<Event> = new EventEmitter();
+	@Output() onKeyEnter: EventEmitter<IEventEmiterBase> = new EventEmitter();
+
+	/**
+	 * ?Evento a emitir cuando se cambie el valor del input
+	 */
+	@Output() onInput: EventEmitter<IEventEmiterBase> = new EventEmitter();
 
 	//!GROUP - FIN - Outputs
 	//#endregion
@@ -84,8 +141,6 @@ export abstract class BaseComponent {
 	 * ? Clases inyectadas por propiedades bindeadas
 	 */
 	protected _bindedClasses: string[] = [];
-
-	
 
 	//GROUP - FIN - Generales
 	//#endregion
@@ -121,6 +176,7 @@ export abstract class BaseComponent {
 	}
 
 	//!GROUP - FIN - Setters & Getters
+
 	// ANCHOR - Constructor
 	constructor() {
 		//* Crea la base para la clase css del componente
@@ -132,12 +188,95 @@ export abstract class BaseComponent {
 	}
 
 	ngOnInit(): void {
+		//** Si existe elemento base en el template añadirle las propiedades
+		!!this.baseRef?.nativeElement && this._createBaseProperties();
 		//* Llamar al método tras inidicarse paraa añadir las clases de propiedades del componente
 		this._addClasses();
 		!!this.onInit && this.onInit();
 	}
 
+	ngOnDestroy(): void {
+		//* Elimina todos los Listeneres al eliminar el componente
+		if (!!this.baseHtml && !!this._baseEvents) {
+			for (const [index, event] of Object.entries(this._baseEvents)) {
+				this.baseHtml.removeEventListener(index, event);
+			}
+		}
+	}
+
 	// ANCHOR - Métodos
+
+	// GROUP - Implementaciones
+	//#region
+
+	/**
+	 * ? Asigna los atributos a la base
+	 */
+	protected _assignAttributes(): void {
+		this._baseAttributes = {
+			'component-name': this.getClassCssName,
+			// class: this.getClasses.join(' '),
+		};
+	}
+
+	/**
+	 * ? Asigna los eventos a la base
+	 */
+	protected _assignEvents(): void {
+		//* Datos a emitir cuando se realice un evento en el componente
+		const emitter = {
+			allClases: this.getClasses,
+			ngClasses: this.classes,
+			bindedClasses: this._bindedClasses,
+			elementName: this._classCssName,
+			label: this.label,
+			styles: this.getStyles,
+			component: this.constructor.name,
+		};
+		//* Se asignan los eventos
+		this._baseEvents = {
+			click: (event: Event) =>
+				this.onClick.emit({ ...emitter, event, eventType: 'click' }),
+			focus: (event: Event) =>
+				this.onFocus.emit({ ...emitter, event, eventType: 'focus' }),
+			blur: (event: Event) =>
+				this.onBlur.emit({ ...emitter, event, eventType: 'blur' }),
+			keydown: (event: Event) =>
+				(event as KeyboardEvent).key === 'Enter' &&
+				this.onKeyEnter.emit({
+					...emitter,
+					event,
+					eventType: 'keydown.enter',
+				}),
+			input: (event: Event) =>
+				this.onInput.emit({ ...emitter, event, eventType: 'input' }),
+		};
+	}
+
+	/**
+	 * ? Añade las propiedades comunes de todos los componentes y los añade al elemento #cnBase en el template
+	 */
+	protected _createBaseProperties() {
+		this.baseHtml = this.baseRef.nativeElement;
+
+		//* Asignamos atributos y eventos a la base de componente del elemento que sea #cnBase
+		this._assignAttributes();
+		this._assignEvents();
+
+		//* Añade atributos al elemento Html que tenga #cnBase
+		for (const [index, attr] of Object.entries(this._baseAttributes)) {
+			this.baseHtml.setAttribute(index, attr);
+		}
+
+		//* Añade eventos al elemento Html que tenga #cnBase
+		for (const [index, attr] of Object.entries(this._baseEvents)) {
+			this.baseHtml.addEventListener(index, attr);
+		}
+
+	}
+
+	// !GROUP - FIN - Implementaciones
+	//#endregion
 
 	//GROUP - Utils para setters
 	//#region

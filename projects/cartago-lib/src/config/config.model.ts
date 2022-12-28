@@ -93,7 +93,7 @@ export class LibraryConfig implements ILibraryConfig {
 
 	/**
 	 * ? Formatea el elemento, su nombre el nombre del componente al modificarlo en el array
-	 * ? Listener/Callback a añadir al proxy cuando los arrays cambien
+	 * ? Listener/Callback a añadir al proxy cuando los arrays cambien (pop, unshift. shift, delete, asign...)
 	 * @param {ILibraryElement} elem
 	 * @param {ILibraryType} prop
 	 * @returns {ILibraryElement} - Retorna el elemento formateado cada vez que se haga un push o un cambio en el array

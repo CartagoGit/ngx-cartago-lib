@@ -4,6 +4,9 @@
 			<cn-component-button
 				[label]="type"
 				(onClick)="clickType(type)"
+				(onBlur)="templateLog($event)"
+				(onFocus)="templateLog($event)"
+				(onKeyEnter)="templateLog($event)"
 				[classes]="[
 					selectedType === type.toLowerCase() ? 'selected' : '',
 					'effect--outline-comming'
