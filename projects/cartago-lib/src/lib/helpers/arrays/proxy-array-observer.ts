@@ -2,7 +2,7 @@
  * ? Proxy para observar los cambios que puedan ocurrir en un array y realizar una funcion cuando esto ocurra
  * @param {any[]} array - El array al que añadir el proxy
  * @param {(value: any) => unknown} [changeValueCallback=(value) => value] - Callback para cambiar el valor antes de realizar el cambio en el array - DEBE DEVOLVER EL VALOR
- * - () => value
+ * - changeValueCallback(value) => valueModificado
  * @param {(...args: any) => void} [finalCallback=() => undefined] - Callback llamado al terminar el cambio en el array
  * @param {boolean} [showLogs=false] - Mostrar Logs
  * @return {any[]} - Retorna el Array con el proxy implementado
