@@ -19,8 +19,14 @@ export abstract class BaseComponent {
 	 */
 	protected _classCssName: string = '';
 
+	/**
+	 * ? Prefijo a usar en las clases de css
+	 */
 	protected _prefix: string = ENVIRONMENTS.PREFIX;
 
+	/**
+	 * ? Tipo de elemento para añadir en la clase css
+	 */
 	protected _type: string = ENVIRONMENTS.TYPES.COMPONENT;
 
 	// !GROUP - FIN - Variables Fijas
@@ -69,12 +75,19 @@ export abstract class BaseComponent {
 	 */
 	@Input() classes: string[] = [];
 
+	//!GROUP - FIN - Inputs
+	//#endregion
+
+	// GROUP - Generales
+	//#region
 	/**
 	 * ? Clases inyectadas por propiedades bindeadas
 	 */
 	protected _bindedClasses: string[] = [];
 
-	//!GROUP - FIN - Inputs
+	
+
+	//GROUP - FIN - Generales
 	//#endregion
 
 	// GROUP - Setters & Getters
