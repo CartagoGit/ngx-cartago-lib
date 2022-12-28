@@ -19,11 +19,9 @@ export class ButtonComponent extends BaseComponent {
 	constructor() {
 		super();
 	}
-	public override onInit(): void {
-
-	}
 
 	//ANCHOR - Métodos
+	//* Añade las clases especificas del componente, ver documentacion
 	protected _addClasses(): void {
 		this._addClassModifiersCss([this.size]);
 	}

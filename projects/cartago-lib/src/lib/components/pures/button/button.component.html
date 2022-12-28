@@ -1,12 +1,9 @@
-<button
-	#cnBase
-	type="button"
-	>
+<button #cnBase type="button">
 	<!-- (click)="templateLog('buenoo')"
+		[ngClass]="getClasses"
 	(keydown.enter)="onKeyEnter.emit($event)"
 	(blur)="onBlur.emit($event)"
 	(focus)="onFocus.emit($event)"
-	[ngClass]="getClasses"
 	[ngStyle]="getStyles" -->
 	{{ label }}
 </button>

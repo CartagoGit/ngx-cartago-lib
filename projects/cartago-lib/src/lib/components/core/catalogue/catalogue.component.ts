@@ -59,9 +59,9 @@ export class CatalogueComponent extends BaseComponent {
 		super();
 	}
 
-	override onInit(): void {
+	override cnOnInit(): void {
 		this._titleSvc.setTitle('Catalogo de la Libreria');
-		
+
 		//* Precargamos la lista de tipos
 		this.listTypes.push(this.all);
 		this.listTypes = [
@@ -74,6 +74,7 @@ export class CatalogueComponent extends BaseComponent {
 		this.selectedType = this._selectedType;
 	}
 
+	//* Añade las clases especificas del componente, ver documentacion
 	protected _addClasses(){
 
 	}
@@ -87,7 +88,6 @@ export class CatalogueComponent extends BaseComponent {
 	 */
 	public clickType(type: string): void {
 		this.selectedType = type.toLowerCase();
-		console.log(type, 'hola');
 	}
 
 }

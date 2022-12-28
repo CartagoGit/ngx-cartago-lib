@@ -84,7 +84,7 @@ export const separatorUpperCaseConverter = (word: string): string => {
 };
 
 /**
- *
+ * ? Devuelve el nombre de la clase añadiendo el prefijo y eliminando el tipo
  * @param {string} name
  * @param {string} [type='']
  * @param {string} [prefix='']

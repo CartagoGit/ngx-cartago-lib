@@ -3,18 +3,25 @@ import {
 	Input,
 	Output,
 	Component,
-	ViewChild,
 	ElementRef,
+	ViewChildren,
+	QueryList,
+	OnInit,
+	AfterViewInit,
+	SimpleChanges,
 } from '@angular/core';
 import { classNameConverter } from '../../../helpers/strings/converters';
 import { ENVIRONMENTS } from '../../../../config/environments';
 
 /**
- * ? Interfaz de clase combinada para hacer opcional onInit en las clases que implementen BaseComponent
- * * Esta funcion sera llamada justo al terminar ngOnInit con los elementos llamados desde BaseComponent
+ * ? Interfaz de clase combinada para hacer opcional onInit, etc en las clases que implementen BaseComponent
+ * * Esta funcion sera llamada justo al terminar ngOnInit,etc con los elementos llamados desde BaseComponent
  */
 export interface BaseComponent {
-	onInit?(): void;
+	cnOnInit?(): void;
+	cnAfterViewInit?(): void;
+	cnOnChanges?(changes: SimpleChanges): void;
+	cnOnDestroy?(): void;
 }
 
 /**
@@ -35,7 +42,7 @@ interface IEventEmiterBase {
 @Component({
 	template: '',
 })
-export abstract class BaseComponent {
+export abstract class BaseComponent implements OnInit, AfterViewInit {
 	// ANCHOR - Variables
 
 	// GROUP - Variables fijas
@@ -43,7 +50,11 @@ export abstract class BaseComponent {
 	/**
 	 * ? Nombre de la base de la clase principal
 	 */
-	protected _classCssName: string = '';
+	protected _classCssName: string = classNameConverter(
+		this.constructor.name,
+		ENVIRONMENTS.TYPES.COMPONENT,
+		ENVIRONMENTS.PREFIX
+	);
 
 	/**
 	 * ? Prefijo a usar en las clases de css
@@ -65,6 +76,43 @@ export abstract class BaseComponent {
 	 */
 	protected _baseEvents!: object;
 
+	//GROUP-SECTION - Estáticos
+	//#region
+
+	/**
+	 * ? Devuelve el nombre del selector del componente
+	 */
+	static getSelector(): string {
+		return (
+			ENVIRONMENTS.PREFIX +
+			'-' +
+			ENVIRONMENTS.TYPES.COMPONENT +
+			'-' +
+			classNameConverter(this.constructor.name)
+		);
+	}
+
+	/**
+	 * ? Devuelve el nombre de la clase del componente
+	 */
+	static getComponentName(): string {
+		return this.constructor.name;
+	}
+
+	/**
+	 * ? Devuelve el nombre de la clase css principal del componente
+	 * @returns
+	 */
+	static getClassCss(): string {
+		return classNameConverter(
+			this.constructor.name,
+			ENVIRONMENTS.TYPES.COMPONENT,
+			ENVIRONMENTS.PREFIX
+		);
+	}
+
+	//!GROUP-SECTION - FIN - Estáticos
+
 	// !GROUP - FIN - Variables Fijas
 	//#endregion
 
@@ -73,15 +121,10 @@ export abstract class BaseComponent {
 	/**
 	 * ? Recupera el elemento #cnBase
 	 */
-	@ViewChild(`${ENVIRONMENTS.PREFIX}Base`, { static: true })
-	baseRef!: ElementRef<HTMLElement>;
+	@ViewChildren(`${ENVIRONMENTS.PREFIX}Base`)
+	baseRef!: QueryList<ElementRef<HTMLElement>>;
 
-	/**
-	 * ? Elemento HTML de #cnBase
-	 */
-	protected baseHtml!: HTMLElement;
-
-	//GROUP - FIN - Referencias
+	//!GROUP - FIN - Referencias
 	//#endregion
 
 	// GROUP - Outputs
@@ -125,7 +168,7 @@ export abstract class BaseComponent {
 	/**
 	 * ? Estilos a inyectar en el botón
 	 */
-	@Input() styles: object = {};
+	@Input() styles!: { [key in string]: string };
 
 	/**
 	 * ? Clases a inyectar en el botón desde el template
@@ -142,7 +185,7 @@ export abstract class BaseComponent {
 	 */
 	protected _bindedClasses: string[] = [];
 
-	//GROUP - FIN - Generales
+	//!GROUP - FIN - Generales
 	//#endregion
 
 	// GROUP - Setters & Getters
@@ -178,30 +221,58 @@ export abstract class BaseComponent {
 	//!GROUP - FIN - Setters & Getters
 
 	// ANCHOR - Constructor
-	constructor() {
-		//* Crea la base para la clase css del componente
-		this._classCssName = classNameConverter(
-			this.constructor.name,
-			'component',
-			this._prefix
-		);
-	}
+	constructor() {}
 
+	/**
+	 * ? No se recomienda  hacer override en las clases que implementen
+	 * ? En su lugar hacer override al método this.onInit();
+	 */
 	ngOnInit(): void {
-		//** Si existe elemento base en el template añadirle las propiedades
-		!!this.baseRef?.nativeElement && this._createBaseProperties();
+		// !!this.baseRef?.nativeElement && this._createBaseProperties();
 		//* Llamar al método tras inidicarse paraa añadir las clases de propiedades del componente
 		this._addClasses();
-		!!this.onInit && this.onInit();
+		!!this.cnOnInit && this.cnOnInit();
 	}
 
+	/**
+	 * ? No se recomienda  hacer override en las clases que implementen
+	 * ? En su lugar hacer override al método this.cnAfterViewInit();
+	 */
+	ngAfterViewInit(): void {
+		//** Si existen elementos base en el template con #cnBase añadirle las propiedades y eventos
+		for (const elem of this.baseRef) {
+			!!elem.nativeElement && this._createBaseProperties(elem.nativeElement);
+		}
+		!!this.cnAfterViewInit && this.cnAfterViewInit();
+	}
+
+	/**
+	 * ? No se recomienda  hacer override en las clases que implementen
+	 * ? En su lugar hacer override al método this.cnOnChanges();
+	 */
+	ngOnChanges(changes: SimpleChanges): void {
+		console.log(changes['classes']);
+		if (changes['classes'] && !!this.baseRef) {
+			this._assignStylesAndClassesCss();
+		}
+		!!this.cnOnChanges && this.cnOnChanges(changes);
+	}
+
+	/**
+	 * ? No se recomienda  hacer override en las clases que implementen
+	 * ? En su lugar hacer override al método this.cnOnDestroy();
+	 */
 	ngOnDestroy(): void {
-		//* Elimina todos los Listeneres al eliminar el componente
-		if (!!this.baseHtml && !!this._baseEvents) {
-			for (const [index, event] of Object.entries(this._baseEvents)) {
-				this.baseHtml.removeEventListener(index, event);
+		//* Elimina todos los Listeneres y eventos al eliminar el componente
+		if (!!this.baseRef && !!this._baseEvents) {
+			for (const elem of this.baseRef) {
+				const baseHtml = elem.nativeElement;
+				for (const [index, event] of Object.entries(this._baseEvents)) {
+					baseHtml.removeEventListener(index, event);
+				}
 			}
 		}
+		!!this.cnOnDestroy && this.cnOnDestroy();
 	}
 
 	// ANCHOR - Métodos
@@ -214,8 +285,8 @@ export abstract class BaseComponent {
 	 */
 	protected _assignAttributes(): void {
 		this._baseAttributes = {
-			'component-name': this.getClassCssName,
-			// class: this.getClasses.join(' '),
+			[this._type + '-name']: this.getClassCssName,
+			class: this.getClasses.join(' '),
 		};
 	}
 
@@ -254,25 +325,46 @@ export abstract class BaseComponent {
 	}
 
 	/**
+	 * ? Asigna los estilos y las clases Css al elemento html con #cnBase
+	 * @protected
+	 */
+	protected _assignStylesAndClassesCss(): void {
+		if (!!this.baseRef) {
+			for (const elem of this.baseRef) {
+				const baseHtml = elem.nativeElement;
+				baseHtml.style.cssText = '';
+				baseHtml.classList.value = this.getClasses
+					.filter((classCss) => classCss !== '')
+					.join(' ');
+				Object.entries(this.getStyles).forEach(([property, value]) => {
+					baseHtml.style.setProperty(property, value);
+				});
+			}
+		}
+	}
+
+	/**
 	 * ? Añade las propiedades comunes de todos los componentes y los añade al elemento #cnBase en el template
 	 */
-	protected _createBaseProperties() {
-		this.baseHtml = this.baseRef.nativeElement;
+	protected _createBaseProperties(nativeElement: HTMLElement): void {
+		const baseHtml = nativeElement;
 
 		//* Asignamos atributos y eventos a la base de componente del elemento que sea #cnBase
 		this._assignAttributes();
 		this._assignEvents();
 
+		//* Añade las clases y estilos al elemento
+		this._assignStylesAndClassesCss();
+
 		//* Añade atributos al elemento Html que tenga #cnBase
 		for (const [index, attr] of Object.entries(this._baseAttributes)) {
-			this.baseHtml.setAttribute(index, attr);
+			baseHtml.setAttribute(index, attr);
 		}
 
 		//* Añade eventos al elemento Html que tenga #cnBase
 		for (const [index, attr] of Object.entries(this._baseEvents)) {
-			this.baseHtml.addEventListener(index, attr);
+			baseHtml.addEventListener(index, attr);
 		}
-
 	}
 
 	// !GROUP - FIN - Implementaciones
