@@ -1,29 +1,29 @@
 <div class="cn-catalogue">
-  <div class="cn-catalogue__types">
-    <div *ngFor="let type of listTypes" class="cn-catalogue__type">
-      <cn-component-button
-        [label]="type"
-        (onClick)="clickType($event, type)"
-        [classes]="[
-          selectedType === type.toLowerCase() ? 'selected' : '',
-          'effect--outline-comming'
-        ]"
-        routerLink=""
-      ></cn-component-button>
-    </div>
-  </div>
-  <div class="cn-catalogue__elements">
-    <div
-      *ngIf="selectedType === 'all'; else list"
-      class="cn-catalogue__element"
-    >
-      <pre>{{ hierarchy | json }}</pre>
-    </div>
+	<div class="cn-catalogue__types">
+		<div *ngFor="let type of listTypes" class="cn-catalogue__type">
+			<cn-component-button
+				[label]="type"
+				(onClick)="clickType(type)"
+				[classes]="[
+					selectedType === type.toLowerCase() ? 'selected' : '',
+					'effect--outline-comming'
+				]"
+				routerLink=""
+			></cn-component-button>
+		</div>
+	</div>
+	<div class="cn-catalogue__elements">
+		<div
+			*ngIf="selectedType === 'all'; else list"
+			class="cn-catalogue__element"
+		>
+			<pre>{{ hierarchy | json }}</pre>
+		</div>
 
-    <ng-template #list>
-      <div *ngFor="let element of selectedList" class="cn-catalogue__element">
-        <pre>{{ element | json }}</pre>
-      </div>
-    </ng-template>
-  </div>
+		<ng-template #list>
+			<div *ngFor="let element of selectedList" class="cn-catalogue__element">
+				<pre>{{ element | json }}</pre>
+			</div>
+		</ng-template>
+	</div>
 </div>

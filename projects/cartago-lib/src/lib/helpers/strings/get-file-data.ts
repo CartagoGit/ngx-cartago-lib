@@ -1,4 +1,4 @@
-import { TLibraryType } from '../../../config/config.model';
+import { ILibraryType } from '../../../config/config.model';
 import {
   IFileDataArgs,
   IFileData,
@@ -41,7 +41,7 @@ export const getFileData = (
   };
 
   //* Metodos especificos segun
-  const methodType: { [key in TLibraryType]?: () => void } = {
+  const methodType: { [key in ILibraryType]?: () => void } = {
     helpers: () => {
       subextension = subextension;
       file.elementName = getElementName(name, 'function');
@@ -62,7 +62,7 @@ export const getFileData = (
   //* Comprobamos si el tipo pertenece a los tipos del objeto
   if (!!type && isKeyInObject(object, type as string)) {
     defaulMethodType();
-    const typeLibrary = type as TLibraryType;
+    const typeLibrary = type as ILibraryType;
     !!methodType[typeLibrary!] //* Comprueba si hay metodo especifico para el tipo
       ? methodType[typeLibrary!]!()!
       : angularMethodType();
@@ -179,13 +179,13 @@ export const getFileNameWithExtension = (
 /**
  * ? Devuelve la ruta segun su procedendia, su tipo y su subtipo
  * @param {?string} [from]
- * @param {?(TLibraryType | string)} [type]
+ * @param {?(ILibraryType | string)} [type]
  * @param {?string} [subtype]
  * @returns {string}
  */
 export const getFilePath = (
   from?: string,
-  type?: TLibraryType | string,
+  type?: ILibraryType | string,
   subtype?: string
 ) => {
   return (

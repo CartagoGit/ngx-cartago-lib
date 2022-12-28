@@ -1,74 +1,30 @@
-import { Component, Input, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { BaseComponent } from '../../../models/components/base/base-component.model';
 
 @Component({
-  selector: 'cn-component-button',
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss'],
+	selector: 'cn-component-button',
+	templateUrl: './button.component.html',
+	styleUrls: ['./button.component.scss'],
 })
-export class ButtonComponent extends BaseComponent implements OnInit {
-  // ANCHOR - Variables
+export class ButtonComponent extends BaseComponent {
+	// ANCHOR - Variables
 
-  // /**
-  //  * ? Nombre de la base de la clase principal
-  //  */
-  // private _className: string = 'cn-button';
+	/**
+	 * ? Tamaños predefinidos del botón
+	 * @type {('small' | 'medium' | 'large')}
+	 */
+	@Input() size: 'small' | 'medium' | 'large' = 'medium';
 
-  // /**
-  //  * ?Evento a emitir cuando se pulse el botón
-  //  */
-  // @Output() onClick: EventEmitter<Event> = new EventEmitter();
+	// ANCHOR - Constructor
+	constructor() {
+		super();
+	}
+	public override onInit(): void {
 
-  // /**
-  //  * ? Texto a mostrar en el botón
-  //  */
-  // @Input() label: string = '';
+	}
 
-  // /**
-  //  * ? Estilos a inyectar en el botón
-  //  */
-  // @Input() styles: object = {};
-
-  // /**
-  //  * ? Clases a inyectar en el botón
-  //  */
-  // @Input() clases: string[] = [];
-
-  /**
-   * ? Tamaños predefinidos del botón
-   * @type {('small' | 'medium' | 'large')}
-   */
-  @Input()
-  size: 'small' | 'medium' | 'large' = 'medium';
-
-  /**
-   * ? Recupera las clases predefinidas al botón desde el template
-   * @public
-   * @readonly
-   */
-  public override get getClasses(): string[] {
-    return [
-      this._className,
-      `${this._className}--${this.size}`,
-      ...this.classes,
-    ];
-  }
-
-  // /**
-  //  * ? Recupera los estilos predefinidos desde el boton
-  //  * @public
-  //  * @readonly
-  //  */
-  // public get getStyles(): object {
-  //   return { ...this.styles };
-  // }
-
-  // ANCHOR - Constructor
-  constructor() {
-    super();
-  }
-
-  ngOnInit(): void {}
-
-  //ANCHOR - Métodos
+	//ANCHOR - Métodos
+	protected _addClasses(): void {
+		this._addClassModifiersCss([this.size]);
+	}
 }

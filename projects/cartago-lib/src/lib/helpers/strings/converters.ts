@@ -15,33 +15,36 @@ import { IFormatConverterOptions } from '../../models/strings-helper.model';
  * @returns {string}
  */
 export const formatConverter = (
-  name: string,
-  typeConverter:
-    | 'camelCase'
-    | 'PascalCase'
-    | 'snake_case'
-    | 'kebab-case' = 'kebab-case',
-  options: IFormatConverterOptions = {
-    everyWordUppercase: false,
-    everyWordLowercase: true,
-    needTrim: true,
-  }
+	name: string,
+	typeConverter:
+		| 'camelCase'
+		| 'PascalCase'
+		| 'snake_case'
+		| 'kebab-case' = 'kebab-case',
+	options: IFormatConverterOptions = {
+		everyWordUppercase: false,
+		everyWordLowercase: true,
+		needTrim: true,
+	}
 ): string => {
-  name = separatorUpperCaseConverter(name);
-  return name
-    .trim()
-    .split(' ')
-    .map((word, index, array) => {
-      options.needTrim && (word = word.trim());
-      options.everyWordLowercase && (word = word.toLowerCase());
-      options.everyWordUppercase && (word = word.toUpperCase());
-      if (index === 0 && typeConverter === 'camelCase') return word;
-      else if (typeConverter === 'PascalCase' || typeConverter === 'camelCase')
-        return capitalizeConverter(word);
-      else if (index === array.length - 1) return word;
-      else return typeConverter === 'snake_case' ? word + '_' : word + '-';
-    })
-    .join('');
+	name = separatorUpperCaseConverter(name);
+	return name
+		.trim()
+		.split(' ')
+		.map((word, index, array) => {
+			options.needTrim && (word = word.trim());
+			options.everyWordLowercase && (word = word.toLowerCase());
+			options.everyWordUppercase && (word = word.toUpperCase());
+			if (index === 0 && typeConverter === 'camelCase') return word;
+			else if (
+				typeConverter === 'PascalCase' ||
+				typeConverter === 'camelCase'
+			)
+				return capitalizeConverter(word);
+			else if (index === array.length - 1) return word;
+			else return typeConverter === 'snake_case' ? word + '_' : word + '-';
+		})
+		.join('');
 };
 
 /**
@@ -50,7 +53,7 @@ export const formatConverter = (
  * @returns {string}
  */
 export const singularConverter = (word: string): string => {
-  return word.trim().slice(0, word.length - 1);
+	return word.trim().slice(0, word.length - 1);
 };
 
 /**
@@ -59,7 +62,7 @@ export const singularConverter = (word: string): string => {
  * @returns {string}
  */
 export const pluralConverter = (word: string): string => {
-  return word.trim() + 's';
+	return word.trim() + 's';
 };
 
 /**
@@ -68,7 +71,7 @@ export const pluralConverter = (word: string): string => {
  * @returns
  */
 export const capitalizeConverter = (word: string): string => {
-  return word.trim().charAt(0).toUpperCase() + word.slice(1);
+	return word.trim().charAt(0).toUpperCase() + word.slice(1);
 };
 
 /**
@@ -77,7 +80,7 @@ export const capitalizeConverter = (word: string): string => {
  * @returns {string}
  */
 export const separatorUpperCaseConverter = (word: string): string => {
-  return word.split(/(?=[A-Z])/).join(' ');
+	return word.split(/(?=[A-Z])/).join(' ');
 };
 
 /**
@@ -88,17 +91,17 @@ export const separatorUpperCaseConverter = (word: string): string => {
  * @returns {string}
  */
 export const classNameConverter = (
-  name: string,
-  type: string = '',
-  prefix: string = ''
+	name: string,
+	type: string = '',
+	prefix: string = ''
 ): string => {
-  const nameConverted =
-    (!!prefix ? prefix + '-' : '') +
-    separatorUpperCaseConverter(name.trim())
-      .toLowerCase()
-      .split(' ')
-      .filter((word) => word !== type)
-      .join('-');
+	const nameConverted =
+		(!!prefix ? prefix + '-' : '') +
+		separatorUpperCaseConverter(name.trim())
+			.toLowerCase()
+			.split(' ')
+			.filter((word) => word !== type)
+			.join('-');
 
-  return nameConverted;
+	return nameConverted;
 };

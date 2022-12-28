@@ -1,10 +1,10 @@
-import { TLibraryType } from '../../config/config.model';
+import { ILibraryType } from '../../config/config.model';
 
 /**
  * ? Interfaz de los datos a recibir para formatear los datos del fichero
  */
 export interface IFileDataArgs {
-  type?: TLibraryType | string;
+  type?: ILibraryType | string;
   subtype?: 'pures' | 'compounds' | 'core';
   subextension?: string;
   extension?: string;
