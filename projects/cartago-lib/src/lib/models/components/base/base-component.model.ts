@@ -1,28 +1,19 @@
 import {
-	EventEmitter,
-	Input,
-	Output,
+	AfterViewInit,
 	Component,
 	ElementRef,
-	ViewChildren,
-	QueryList,
+	EventEmitter,
+	Input,
+	OnChanges,
+	OnDestroy,
 	OnInit,
-	AfterViewInit,
+	Output,
+	QueryList,
 	SimpleChanges,
+	ViewChildren,
 } from '@angular/core';
 import { classNameConverter } from '../../../helpers/strings/converters';
 import { ENVIRONMENTS } from '../../../../config/environments';
-
-/**
- * ? Interfaz de clase combinada para hacer opcional onInit, etc en las clases que implementen BaseComponent
- * * Esta funcion sera llamada justo al terminar ngOnInit,etc con los elementos llamados desde BaseComponent
- */
-export interface BaseComponent {
-	cnOnInit?(): void;
-	cnAfterViewInit?(): void;
-	cnOnChanges?(changes: SimpleChanges): void;
-	cnOnDestroy?(): void;
-}
 
 /**
  * ? Interfaz con lo datos a emitir al realizarse un evento en el componente
@@ -39,10 +30,23 @@ interface IEventEmiterBase {
 	eventType: string;
 }
 
+/**
+ * ? Clase combinada para hacer opcional onInit, etc en las clases que implementen BaseComponent
+ * * Estas funciones seran llamada justo al terminar ngOnInit,etc con los elementos llamados desde BaseComponent
+ * * Implementa funciones, eventos y variables para poder usar en cualquier Componente
+ */
+export interface BaseComponent {
+	cnOnInit?(): void;
+	cnAfterViewInit?(): void;
+	cnOnChanges?(changes: SimpleChanges): void;
+	cnOnDestroy?(): void;
+}
 @Component({
 	template: '',
 })
-export abstract class BaseComponent implements OnInit, AfterViewInit {
+export abstract class BaseComponent
+	implements OnInit, AfterViewInit, OnDestroy, OnChanges
+{
 	// ANCHOR - Variables
 
 	// GROUP - Variables fijas
@@ -109,8 +113,8 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	 * @static
 	 * @returns {string}
 	 */
-	static getType() : string {
-		return ENVIRONMENTS.TYPES.COMPONENT
+	static getType(): string {
+		return ENVIRONMENTS.TYPES.COMPONENT;
 	}
 
 	/**
@@ -118,7 +122,7 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	 * @returns
 	 */
 	static getPrefix(): string {
-		return ENVIRONMENTS.PREFIX
+		return ENVIRONMENTS.PREFIX;
 	}
 
 	//!GROUP-SECTION - FIN - Estáticos
@@ -239,6 +243,7 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	}
 
 	//!GROUP - FIN - Setters & Getters
+	//#endregion
 
 	// ANCHOR - Constructor
 	constructor() {}
@@ -486,6 +491,7 @@ export abstract class BaseComponent implements OnInit, AfterViewInit {
 	public templateLog(arg: any) {
 		console.log(arg);
 	}
+
 	//!GROUP - FIN - Utils para los componentes
 	//#endregion
 }

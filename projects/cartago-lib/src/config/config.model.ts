@@ -4,7 +4,7 @@ import { IFileData } from '../lib/models/files.model';
 import {
 	IConvertToUppercase,
 	IConvertToSingular,
-} from '../lib/models/types/helpers.model';
+} from '../lib/models/types/modify-types.model';
 
 /**
  * ? Tipos de elementos de la libreria
