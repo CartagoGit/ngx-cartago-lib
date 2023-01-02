@@ -1,4 +1,4 @@
-import { IFormatConverterOptions } from '../../models/strings-helper.model';
+import { IFormatConverterOptions } from '../../models/strings/strings-helper.model';
 
 /**
  * ? Convierte un string al tipo de formato

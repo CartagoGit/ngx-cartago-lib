@@ -1,6 +1,5 @@
-
 /**
- * ? Conjunto de exportaciones de los Utiles de Arrays
+ * ? Conjunto de exportaciones de los helpers de Arrays
 */
 export { proxyArrayObserver } from './proxy-array-observer';
 

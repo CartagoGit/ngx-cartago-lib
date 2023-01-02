@@ -1,4 +1,4 @@
-import { IListFormatedOptions } from '../../models/strings/list-formated.model';
+import { IListFormatedOptions } from '../../models/strings/strings-helper.model';
 
 /**
  * ? Retorna una lista en string

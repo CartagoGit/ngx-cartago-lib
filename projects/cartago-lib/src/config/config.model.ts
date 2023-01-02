@@ -1,6 +1,6 @@
-import { getFileData } from '../lib/helpers/strings/get-file-data';
+import { getFileData } from '../lib/helpers/files/get-file-data';
 import { proxyArrayObserver } from '../lib/helpers/helpers';
-import { IFileData } from '../lib/models/files.model';
+import { IFileData } from '../lib/models/files/files.model';
 import {
 	IConvertToUppercase,
 	IConvertToSingular,
@@ -67,7 +67,6 @@ export class LibraryConfig implements ILibraryConfig {
 	public models: ILibraryElement[] = [];
 	public helpers: ILibraryElement[] = [];
 	public styles: ILibraryElement[] = [];
-
 	public config: ILibraryElement = { name: 'config' };
 
 	// ANCHOR - Constructor

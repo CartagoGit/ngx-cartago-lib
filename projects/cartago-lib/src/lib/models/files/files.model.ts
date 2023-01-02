@@ -1,4 +1,4 @@
-import { ILibraryType } from '../../config/config.model';
+import { ILibraryType } from '../../../config/config.model';
 
 /**
  * ? Interfaz de los datos a recibir para formatear los datos del fichero
