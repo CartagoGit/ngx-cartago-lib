@@ -1,7 +1,8 @@
 /**
  * ? Todas los helpers a exportar
  */
-export * from './arrays/arrays';
-export * from './objects/objects';
-export * from './strings/strings';
-export * from './files/files';
+export * from './arrays/_arrays.helpers';
+export * from './objects/_objects.helpers';
+export * from './strings/_strings.helpers';
+export * from './numbers/_numbers.helpers';
+export * from './files/_files.helpers';
